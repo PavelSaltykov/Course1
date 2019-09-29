@@ -58,54 +58,26 @@ bool testWithoutMostFrequentElement()
 {
 	int array[3] = {1, 2, 3};
 	const int MostFrequent = searchOfMostFrequent(array, 3);
-	if (MostFrequent == 1 || MostFrequent == 2 || MostFrequent == 3)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return MostFrequent == 1 || MostFrequent == 2 || MostFrequent == 3;
 }
 
 bool testWithAllTheIdenticalElements()
 {
 	int array[4] = {5, 5, 5, 5};
-	if (searchOfMostFrequent(array, 4) == 5)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return searchOfMostFrequent(array, 4) == 5;
 }
 
 bool testWithTwoMostFrequentElements()
 {
 	int array[6] = {2, 4, 2, 3, 7, 4};
 	const int MostFrequent = searchOfMostFrequent(array, 6);
-	if ((MostFrequent == 2) || (MostFrequent == 4))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (MostFrequent == 2) || (MostFrequent == 4);
 }
 
 bool testWithNegativeElements()
 {
 	int array[7] = {9, 1, -3, 3, -3, 4, -5};
-	if (searchOfMostFrequent(array, 7) == -3)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return searchOfMostFrequent(array, 7) == -3;
 }
 
 int main()
