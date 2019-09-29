@@ -18,7 +18,7 @@ void insertionSort(int array[], int left, int right)
 
 int partition(int array[], int left, int right)
 {
-	int pivot = array[left];
+	const int pivot = array[left];
 	int low = left;
 	int high = right;
 	while (low < high)
@@ -40,9 +40,6 @@ int partition(int array[], int left, int right)
 	}
 	if (low == left)
 	{
-		const int temp = pivot;
-		pivot = array[left];
-		array[left] = temp;
 		low = left + 1;
 	}
 	return low;
