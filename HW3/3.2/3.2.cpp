@@ -86,11 +86,8 @@ bool checkSortedArray(int array[], int lengthOfArray)
 		{
 			return false;
 		}
-		if (i == lengthOfArray - 2)
-		{
-			return true;
-		}
 	}
+	return true;
 }
 
 bool tests()
