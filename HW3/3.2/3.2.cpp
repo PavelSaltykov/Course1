@@ -149,21 +149,31 @@ int main()
 		scanf("%d", &k);
 		srand(time(nullptr));
 		int *array = new int[n]();
+		printf("Random array: ");
 		for (int i = 0; i < n; i++)
 		{
 			array[i] = rand() % 100;
+			printf("%d ", array[i]);
 		}
 		qsort(array, 0, n - 1);
 
-		printf("Numbers found in array: ");
+		printf("\nRandom numbers: ");
+		int *randomNumbers = new int[k]();
 		for (int i = 0; i < k; i++)
 		{
-			const int randomNumber = rand() % 100;
-			if (binSearch(array, n, randomNumber))
+			randomNumbers[i] = rand() % 100;
+			printf("%d ", randomNumbers[i]);
+		}
+
+		printf("\nNumbers found in array: ");
+		for (int i = 0; i < k; i++)
+		{
+			if (binSearch(array, n, randomNumbers[i]))
 			{
-				printf("%d ", randomNumber);
+				printf("%d ", randomNumbers[i]);
 			}
 		}
+		delete[] randomNumbers;
 		delete[] array;
 	}
 	return 0;
