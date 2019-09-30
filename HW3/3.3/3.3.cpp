@@ -1,109 +1,144 @@
 ﻿#include <climits>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-int searchMaxInArray(int array[], int lengthOfArray)
+int partition(int array[], int left, int right)
 {
-	int maximum = INT_MIN;
-	for (int i = 0; i < lengthOfArray; i++)
+	const int pivot = array[left];
+	int low = left;
+	int high = right;
+	while (low < high)
 	{
-		if (array[i] > maximum)
+		if (array[low] < pivot)
 		{
-			maximum = array[i];
+			low++;
+		}
+		else if (array[high] >= pivot)
+		{
+			high--;
+		}
+		else
+		{
+			const int temp = array[low];
+			array[low] = array[high];
+			array[high] = temp;
 		}
 	}
-	return maximum;
+	if (low == left)
+	{
+		low = left + 1;
+	}
+	return low;
 }
 
-int searchMinInArray(int array[], int lengthOfArray)
+void qsort(int array[], int left, int right)
 {
-	int minimum = INT_MAX;
-	for (int i = 0; i < lengthOfArray; i++)
+	if (right - left > 0)
 	{
-		if (array[i] < minimum)
-		{
-			minimum = array[i];
-		}
+		const int pivot = partition(array, left, right);
+		qsort(array, left, pivot - 1);
+		qsort(array, pivot, right);
 	}
-	return minimum;
 }
 
-int searchOfMostFrequent(int array[], int lengthOfArray)
+int searchOfMinimumMostFrequent(int array[], int lengthOfArray)
 {
-	const int maximumElement = searchMaxInArray(array, lengthOfArray);
-	const int minimumElement = searchMinInArray(array, lengthOfArray);
-	const int shift = minimumElement;
-	const int numberOfCounters = maximumElement - minimumElement + 1;
-
-	int *arrayOfCounters = new int[numberOfCounters]();
-	for (int i = 0; i < lengthOfArray; i++)
+	qsort(array, 0, lengthOfArray - 1);
+	int minimumMostFrequent = array[0];
+	int maxCounter = 1;
+	int tempCounter = 1;
+	for (int i = 1; i < lengthOfArray; i++)
 	{
-		arrayOfCounters[array[i] - shift]++;
-	}
-
-	int MostFrequentElement = 0;
-	int  maxCounter = 0;
-	for (int i = 0; i < numberOfCounters; i++)
-	{
-		if (arrayOfCounters[i] > maxCounter)
+		if (array[i] == array[i - 1])
 		{
-			MostFrequentElement = i + shift;
-			maxCounter = arrayOfCounters[i];
+			tempCounter++;
+		}
+		else
+		{
+			tempCounter = 1;
+		}
+		if (tempCounter > maxCounter)
+		{
+			maxCounter = tempCounter;
+			minimumMostFrequent = array[i];
 		}
 	}
-	delete[] arrayOfCounters;
-	return MostFrequentElement;
+	return minimumMostFrequent;
+}
+
+bool checkSortedArray(int array[], int lengthOfArray)
+{
+	for (int i = 0; i < lengthOfArray - 1; i++)
+	{
+		if (array[i] > array[i + 1])
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool testForQsort()
+{
+	const int length = 13;
+	int array[length] = {};
+	srand(time(nullptr));
+	for (int i = 0; i < length; i++)
+	{
+		array[i] = rand() % 10;
+	}
+	qsort(array, 0, length - 1);
+	return checkSortedArray(array, length);
 }
 
 bool testWithoutMostFrequentElement()
 {
-	int array[3] = {1, 2, 3};
-	const int MostFrequent = searchOfMostFrequent(array, 3);
-	return MostFrequent == 1 || MostFrequent == 2 || MostFrequent == 3;
+	int array[5] = {3, 4, 2, 5, 1};
+	return searchOfMinimumMostFrequent(array, 5) == 1;
 }
 
 bool testWithAllTheIdenticalElements()
 {
 	int array[4] = {5, 5, 5, 5};
-	return searchOfMostFrequent(array, 4) == 5;
+	return searchOfMinimumMostFrequent(array, 4) == 5;
 }
 
-bool testWithTwoMostFrequentElements()
+bool testWithSomeMostFrequentElements()
 {
-	int array[6] = {2, 4, 2, 3, 7, 4};
-	const int MostFrequent = searchOfMostFrequent(array, 6);
-	return (MostFrequent == 2) || (MostFrequent == 4);
+	int array[10] = {3, 7, 2, 7, 2, 4, 7, 3, 3, 4};
+	return searchOfMinimumMostFrequent(array, 10) == 3;
 }
 
-bool testWithNegativeElements()
+bool tests()
 {
-	int array[7] = {9, 1, -3, 3, -3, 4, -5};
-	return searchOfMostFrequent(array, 7) == -3;
-}
-
-int main()
-{
-	int counterOfErrors = 0;
+	bool testsPassed = true;
+	if (!testForQsort())
+	{
+		printf("Error in qsort\n");
+		testsPassed = false;
+	}
 	if (!testWithoutMostFrequentElement())
 	{
 		printf("Error in test without most frequent element\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 	if (!testWithAllTheIdenticalElements())
 	{
 		printf("Error in test with all the identical elements\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
-	if (!testWithTwoMostFrequentElements())
+	if (!testWithSomeMostFrequentElements())
 	{
-		printf("Error in test with two most frequent elements\n");
-		counterOfErrors++;
+		printf("Error in test with some most frequent elements");
+		testsPassed = false;
 	}
-	if (!testWithNegativeElements())
-	{
-		printf("Error in test with negative elements\n");
-		counterOfErrors++;
-	}
-	if (counterOfErrors == 0)
+	return testsPassed;
+}
+
+int main()
+{
+	if (tests())
 	{
 		printf("Tests passed");
 	}
