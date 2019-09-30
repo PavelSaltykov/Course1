@@ -79,49 +79,49 @@ bool arrayTest(int array[], int lengthOfArray)
 
 bool tests()
 {
-	int counterOfErrors = 0;
+	bool testsPassed = true;
 	int array1[9] = {5, 4, 10, 6, 12, 7, 11, 3, 5};
 	if (!arrayTest(array1, 9))
 	{
 		printf("Error in insertion sort\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int array2[10] = {5, 4, 10, 6, 12, 7, 11, 3, 5};
 	if (!arrayTest(array2, 10))
 	{
 		printf("Error in test with array of 10 elements\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int array3[15] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 	if (!arrayTest(array3, 15))
 	{
 		printf("Error in test with array already sorted\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int array4[15] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	if (!arrayTest(array4, 15))
 	{
 		printf("Error in test with all the identical elements\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int array5[15] = {1, 4, 10, 6, 4, 7, 11, 1, 4, 5, 7, 15, 8, 9, 13};
 	if (!arrayTest(array5, 15))
 	{
 		printf("Error when pivot is minimum in array\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int array6[15] = {15, 4, 10, 6, 4, 15, 11, 3, 4, 5, 3, 2, 7, 4, 9};
 	if (!arrayTest(array6, 15))
 	{
 		printf("Error when pivot is maximum in array");
-		counterOfErrors++;
+		testsPassed = false;
 	}
-	return counterOfErrors == 0;   
+	return testsPassed;
 }
 
 int main()

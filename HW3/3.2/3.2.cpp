@@ -95,14 +95,14 @@ bool checkSortedArray(int array[], int lengthOfArray)
 
 bool tests()
 {
-	int counterOfErrors = 0;
+	bool testsPassed = true;
 	const int length = 10;
 	int testArray1[length] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	qsort(testArray1, 0, length - 1);
 	if (!checkSortedArray(testArray1, length))
 	{
 		printf("Error in test with array already sorted\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int testArray2[length] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
@@ -110,7 +110,7 @@ bool tests()
 	if (!checkSortedArray(testArray2, length))
 	{
 		printf("Error in test with all the identical elements\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int testArray3[length] = {1, 4, 10, 6, 4, 7, 11, 1, 4, 5};
@@ -118,7 +118,7 @@ bool tests()
 	if (!checkSortedArray(testArray3, length))
 	{
 		printf("Error when pivot is minimum in array\n");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	int testArray4[length] = {15, 4, 10, 6, 4, 15, 11, 3, 4, 5};
@@ -126,15 +126,15 @@ bool tests()
 	if (!checkSortedArray(testArray4, length))
 	{
 		printf("Error when pivot is maximum in array");
-		counterOfErrors++;
+		testsPassed = false;
 	}
 
 	if (!elementSearchTest())
 	{
 		printf("Error in search of elements");
-		counterOfErrors++;
+		testsPassed = false;
 	}
-	return counterOfErrors == 0;
+	return testsPassed;
 }
 
 int main()
