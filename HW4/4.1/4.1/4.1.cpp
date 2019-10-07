@@ -1,7 +1,7 @@
 ﻿#include <stdio.h>
 #include <locale.h>
 
-void convert(char number, int binaryNumber[]) 
+void convertToBinary(char number, int binaryNumber[]) 
 {
 	int bit = 0b10000000;
 	for (int i = 0; i < 8; i++)
@@ -14,6 +14,18 @@ void convert(char number, int binaryNumber[])
 bool rangeCheck(int number, int left, int right)
 {
 	return(number >= left && number <= right);
+}
+
+void sumOfTwoBinaryNumbers(int firstNumber[], int secondNumber2[], int sumOfNumbers[])
+{
+	for (int i = 7; i >= 0; i--)
+	{
+		sumOfNumbers[i] = (sumOfNumbers[i] + firstNumber[i] + secondNumber2[i]) % 2;
+		if (i != 0 && (firstNumber[i] + secondNumber2[i]) / 2 == 1)
+		{
+			sumOfNumbers[i - 1]++;
+		}
+	}
 }
 
 int main()
@@ -39,7 +51,7 @@ int main()
 	}
 	const char number1 = temp;
 	int binaryNumber1[8] = {};
-	convert(number1, binaryNumber1);
+	convertToBinary(number1, binaryNumber1);
 
 	printf("Введите второе целое число (из диапазона от %d до %d): ", left, right);
 	scanf("%d", &temp);
@@ -50,8 +62,9 @@ int main()
 	}
 	const char number2 = temp;
 	int binaryNumber2[8] = {};
-	convert(number2, binaryNumber2);
+	convertToBinary(number2, binaryNumber2);
 
+	printf("\nДвоичное представление в дополнительном коде:\n");
 	printf("%d -> ", number1);
 	for (int i = 0; i < 8; i++)
 	{
@@ -63,5 +76,13 @@ int main()
 		printf("%d", binaryNumber2[i]);
 	}
 	
+	printf("\n\nСумма этих чисел: ");
+	int sum[8] = {};
+	sumOfTwoBinaryNumbers(binaryNumber1, binaryNumber2, sum);
+	for (int i = 0; i < 8; i++)
+	{
+		printf("%d", sum[i]);
+	}
+
 	return 0;
 }
