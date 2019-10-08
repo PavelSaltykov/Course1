@@ -6,24 +6,46 @@ void convertToBinary(char number, int binaryNumber[])
 	int bit = 0b10000000;
 	for (int i = 0; i < 8; i++)
 	{
-		binaryNumber[i] = (number & bit) ? 1 : 0;
+		binaryNumber[i] = number & bit ? 1 : 0;
 		bit = bit >> 1;
 	}
 }
 
-bool rangeCheck(int number, int left, int right)
+int convertToDecimal(int binaryNumber[])
 {
-	return(number >= left && number <= right);
-}
-
-void sumOfTwoBinaryNumbers(int firstNumber[], int secondNumber2[], int sumOfNumbers[])
-{
+	int decimalNumber = 0;
+	int powerOf2 = 1;
+	bool isNegative = false;
+	if (binaryNumber[0] == 1)
+	{
+		isNegative = true;
+	}
 	for (int i = 7; i >= 0; i--)
 	{
-		sumOfNumbers[i] = (sumOfNumbers[i] + firstNumber[i] + secondNumber2[i]) % 2;
-		if (i != 0 && (firstNumber[i] + secondNumber2[i]) / 2 == 1)
+		if (isNegative)
 		{
-			sumOfNumbers[i - 1]++;
+			binaryNumber[i] = binaryNumber[i] == 1 ? 0 : 1;
+		}
+		decimalNumber += powerOf2 * binaryNumber[i];
+		powerOf2 *= 2;
+	}
+	return isNegative ? -decimalNumber - 1 : decimalNumber;
+}
+
+bool rangeCheck(int number, int left, int right)
+{
+	return number >= left && number <= right;
+}
+
+void sumOfTwoBinaryNumbers(int firstNumber[], int secondNumber[], int sumOfNumbers[])
+{
+	int carryOver = 0;
+	for (int i = 7; i >= 0; i--)
+	{
+		sumOfNumbers[i] = (carryOver + firstNumber[i] + secondNumber[i]) % 2;
+		if (i != 0)
+		{
+			carryOver = (carryOver + firstNumber[i] + secondNumber[i]) / 2;
 		}
 	}
 }
@@ -77,12 +99,12 @@ int main()
 	}
 	
 	printf("\n\nСумма этих чисел: ");
-	int sum[8] = {};
-	sumOfTwoBinaryNumbers(binaryNumber1, binaryNumber2, sum);
+	int binarySum[8] = {};
+	sumOfTwoBinaryNumbers(binaryNumber1, binaryNumber2, binarySum);
 	for (int i = 0; i < 8; i++)
 	{
-		printf("%d", sum[i]);
+		printf("%d", binarySum[i]);
 	}
-
+	printf(" -> %d\n", convertToDecimal(binarySum));
 	return 0;
 }
