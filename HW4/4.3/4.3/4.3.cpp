@@ -5,6 +5,7 @@ void begin()
 {
 	printf("\nВведите:\n 0 - выйти\n");
 	printf(" 1 - добавить запись (имя и телефон)\n");
+	printf(" 2 - распечатать все имеющиеся записи\n");
 	printf(" 5 - сохранить текущие данные\n");
 }
 
@@ -37,7 +38,7 @@ void addEntry(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuff
 		printf("Введите имя: ");
 		char name[50] = {};
 		scanf("%s", name);
-		printf("Введите номер телефона: ");
+		printf("Введите номер телефона (без пробелов): ");
 		char phoneNumber[50] = {};
 		scanf("%s", phoneNumber);
 
@@ -52,7 +53,27 @@ void addEntry(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuff
 	}
 }
 
-void saveData(char (&entries)[100][100], int &amountOfEntriesInBuffer)
+void printAllEntries()
+{
+	if (countEntriesInBase() == 0)
+	{
+		printf("Записей нет\n");
+	}
+	else
+	{
+		FILE *file = fopen("database.txt", "r");
+		printf("\n");
+		while (!feof(file))
+		{
+			char buffer[entryLength]="";
+			fgets(buffer, entryLength, file);
+			printf("%s", buffer);
+		}
+		fclose(file);
+	}
+}
+
+void saveData(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer)
 {
 	if (amountOfEntriesInBuffer == 0)
 	{
@@ -68,6 +89,7 @@ void saveData(char (&entries)[100][100], int &amountOfEntriesInBuffer)
 		fclose(file);
 		printf("Данные сохранены\n");
 		amountOfEntriesInBuffer = 0;
+		memset(entries, 0, sizeof(entries));
 	}
 }
 
@@ -97,6 +119,9 @@ int main()
 			break;
 		case '1':
 			addEntry(entriesInBuffer, amountOfEntriesInBuffer);
+			break;
+		case '2':
+			printAllEntries();
 			break;
 		case '5':
 			saveData(entriesInBuffer, amountOfEntriesInBuffer);
