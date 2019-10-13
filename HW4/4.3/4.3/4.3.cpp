@@ -6,6 +6,8 @@ void begin()
 	printf("\nВведите:\n 0 - выйти\n");
 	printf(" 1 - добавить запись (имя и телефон)\n");
 	printf(" 2 - распечатать все имеющиеся записи\n");
+	printf(" 3 - найти номер телефона по имени\n");
+	printf(" 4 - найти имя по номеру телефону\n");
 	printf(" 5 - сохранить текущие данные\n");
 }
 
@@ -13,18 +15,17 @@ int countEntriesInBase()
 {
 	FILE *file = fopen("database.txt", "r");
 	int countEntries = 0;
-	if (!file)
+	if (file)
 	{
-		return countEntries;
-	}
-	while (!feof(file))
-	{
-		if (fgetc(file) == '\n')
+		while (!feof(file))
 		{
-			countEntries++;
+			if (fgetc(file) == '\n')
+			{
+				countEntries++;
+			}
 		}
+		fclose(file);
 	}
-	fclose(file);
 	return countEntries;
 }
 
@@ -71,6 +72,48 @@ void printAllEntries()
 		}
 		fclose(file);
 	}
+}
+
+const char *findPhone(const char fileName[], char enterednName[])
+{
+	FILE *file = fopen(fileName, "r");
+	if (file)
+	{
+		while (!feof(file))
+		{
+			char nameInBuffer[50] = "";
+			fscanf(file, "%s", nameInBuffer);
+			static char phoneNumberInBuffer[50] = "";
+			fscanf(file, "%s", phoneNumberInBuffer);
+			if (strcmp(nameInBuffer, enterednName) == 0)
+			{
+				return phoneNumberInBuffer;
+			}
+		}
+		fclose(file);
+	}
+	return "Номер телефона не найден";
+}
+
+const char *findName(const char fileName[], char enteredPhone[])
+{
+	FILE *file = fopen(fileName, "r");
+	if (file)
+	{
+		while (!feof(file))
+		{
+			static char nameInBuffer[50] = "";
+			fscanf(file, "%s", nameInBuffer);
+			char phoneNumberInBuffer[50] = "";
+			fscanf(file, "%s", phoneNumberInBuffer);
+			if (strcmp(phoneNumberInBuffer, enteredPhone) == 0)
+			{
+				return nameInBuffer;
+			}
+		}
+		fclose(file);
+	}
+	return "Имя не найдено";
 }
 
 void saveData(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer)
@@ -123,6 +166,22 @@ int main()
 		case '2':
 			printAllEntries();
 			break;
+		case '3':
+		{
+			printf("Введите имя: ");
+			char name[50] = "";
+			scanf("%s", name);
+			printf("%s\n", findPhone("database.txt", name));
+			break;
+		}
+		case '4':
+		{
+			printf("Введите номер телефона: ");
+			char phone[50] = "";
+			scanf("%s", phone);
+			printf("%s\n", findName("database.txt", phone));
+			break;
+		}
 		case '5':
 			saveData(entriesInBuffer, amountOfEntriesInBuffer);
 			break;
