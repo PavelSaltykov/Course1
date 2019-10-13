@@ -11,9 +11,9 @@ void begin()
 	printf(" 5 - сохранить текущие данные\n");
 }
 
-int countEntriesInBase()
+int countEntriesInBase(const char fileName[])
 {
-	FILE *file = fopen("database.txt", "r");
+	FILE *file = fopen(fileName, "r");
 	int countEntries = 0;
 	if (file)
 	{
@@ -34,13 +34,13 @@ const int entryLength = 100;
 
 void addEntry(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer)
 {
-	if (countEntriesInBase() + amountOfEntriesInBuffer < 100)
+	if (countEntriesInBase("database.txt") + amountOfEntriesInBuffer < 100)
 	{
 		printf("Введите имя: ");
-		char name[50] = {};
+		char name[50] = "";
 		scanf("%s", name);
 		printf("Введите номер телефона (без пробелов): ");
-		char phoneNumber[50] = {};
+		char phoneNumber[50] = "";
 		scanf("%s", phoneNumber);
 
 		strncat(entries[amountOfEntriesInBuffer], name, strlen(name));
@@ -56,7 +56,7 @@ void addEntry(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuff
 
 void printAllEntries()
 {
-	if (countEntriesInBase() == 0)
+	if (countEntriesInBase("database.txt") == 0)
 	{
 		printf("Записей нет\n");
 	}
@@ -74,7 +74,7 @@ void printAllEntries()
 	}
 }
 
-const char *findPhone(const char fileName[], char enterednName[])
+const char *findPhone(const char fileName[], char enteredName[])
 {
 	FILE *file = fopen(fileName, "r");
 	if (file)
@@ -85,7 +85,7 @@ const char *findPhone(const char fileName[], char enterednName[])
 			fscanf(file, "%s", nameInBuffer);
 			static char phoneNumberInBuffer[50] = "";
 			fscanf(file, "%s", phoneNumberInBuffer);
-			if (strcmp(nameInBuffer, enterednName) == 0)
+			if (strcmp(nameInBuffer, enteredName) == 0)
 			{
 				return phoneNumberInBuffer;
 			}
@@ -116,30 +116,86 @@ const char *findName(const char fileName[], char enteredPhone[])
 	return "Имя не найдено";
 }
 
-void saveData(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer)
+bool saveData(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer, const char fileName[])
 {
 	if (amountOfEntriesInBuffer == 0)
 	{
-		printf("Новых записей нет\n");
+		return false;
 	}
 	else
 	{
-		FILE *file = fopen("database.txt", "a");
+		FILE *file = fopen(fileName, "a");
 		for (int i = 0; i < amountOfEntriesInBuffer; ++i)
 		{
 			fprintf(file, "%s\n", entries[i]);
 		}
 		fclose(file);
-		printf("Данные сохранены\n");
 		amountOfEntriesInBuffer = 0;
 		memset(entries, 0, sizeof(entries));
 	}
+	return true;
+}
+
+bool testSavingData()
+{
+	char entries[baseSize][entryLength] = 
+	{
+		"Петя 346-32-87", 
+		"Вася 89102347856", 
+		"Оля 1233445", 
+		"Вова +7(911)777-50-05"
+	};
+	int amountOfEntries = 4;
+	const char fileName[9] = "test.txt";
+	return saveData(entries, amountOfEntries, fileName) && countEntriesInBase(fileName) == 4;
+}
+
+bool testPhoneSearch()
+{
+	char name[5] = "Оля";
+	const char phone[8] = "1233445";
+	const char *result = findPhone("test.txt", name);
+	return strcmp(result, phone) == 0;
+}
+
+bool testNameSearch()
+{
+	const char name[5] = "Вова";
+	char phone[17] = "+7(911)777-50-05";
+	const char *result = findName("test.txt", phone);
+	return strcmp(result, name) == 0;
+}
+
+bool tests()
+{
+	FILE *file = fopen("test.txt", "w");
+	fclose(file);
+	if (!testSavingData())
+	{
+		printf("Ошибка в сохранении данных\n");
+		return false;
+	}
+	if (!testPhoneSearch())
+	{
+		printf("Ошибка в поиске номера телефона\n");
+		return false;
+	}
+	if (!testNameSearch())
+	{
+		printf("Ошибка в поиске имени\n");
+		return false;
+	}
+	return true;
 }
 
 int main()
 {
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
+	if (!tests())
+	{
+		return 1;
+	}
 	printf("Телефонный справочник\n");
 	int amountOfEntriesInBuffer = 0;
 	char entriesInBuffer[baseSize][entryLength] = {};
@@ -183,7 +239,14 @@ int main()
 			break;
 		}
 		case '5':
-			saveData(entriesInBuffer, amountOfEntriesInBuffer);
+			if (saveData(entriesInBuffer, amountOfEntriesInBuffer, "database.txt"))
+			{
+				printf("Данные сохранены\n");
+			}
+			else
+			{
+				printf("Новых записей нет\n");
+			}
 			break;
 		default:
 			printf("Неверный ввод, попробуйте ещё раз.\n");
