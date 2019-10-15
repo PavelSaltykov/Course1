@@ -1,5 +1,30 @@
-﻿#include <stdio.h>
-#include <windows.h>
+﻿#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+struct Entry
+{
+	char name[50];
+	char phone[50];
+};
+
+int countEntriesInBuffer(Entry entries[], char const fileName[])
+{
+	FILE *file = fopen(fileName, "a+");
+	int entriesCounter = 0;
+	while (!feof(file))
+	{
+		if (fscanf(file, "%[^-]%*c%*c", entries[entriesCounter].name) != EOF)
+		{
+			const int length = strlen(entries[entriesCounter].name);
+			entries[entriesCounter].name[length - 1] = '\0';
+			fscanf(file, "%[^\n]%*c", entries[entriesCounter].phone);
+			++entriesCounter;
+		}
+	}
+	fclose(file);
+	return entriesCounter;
+}
 
 void begin()
 {
@@ -11,42 +36,15 @@ void begin()
 	printf(" 5 - сохранить текущие данные\n");
 }
 
-int countEntriesInBase(const char fileName[])
+void addEntry(Entry entries[], int &amountOfEntriesInBuffer)
 {
-	FILE *file = fopen(fileName, "r");
-	int countEntries = 0;
-	if (file)
-	{
-		while (!feof(file))
-		{
-			if (fgetc(file) == '\n')
-			{
-				countEntries++;
-			}
-		}
-		fclose(file);
-	}
-	return countEntries;
-}
-
-const int baseSize = 100;
-const int entryLength = 100;
-
-void addEntry(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer)
-{
-	if (countEntriesInBase("database.txt") + amountOfEntriesInBuffer < 100)
+	if (amountOfEntriesInBuffer < 100)
 	{
 		printf("Введите имя: ");
-		char name[50] = "";
-		scanf("%s", name);
-		printf("Введите номер телефона (без пробелов): ");
-		char phoneNumber[50] = "";
-		scanf("%s", phoneNumber);
-
-		strncat(entries[amountOfEntriesInBuffer], name, strlen(name));
-		strcat(entries[amountOfEntriesInBuffer], " ");
-		strncat(entries[amountOfEntriesInBuffer], phoneNumber, strlen(phoneNumber));
-		amountOfEntriesInBuffer++;
+		scanf("\n%[^\n]", entries[amountOfEntriesInBuffer].name);
+		printf("Введите номер телефона: ");
+		scanf("\n%[^\n]", entries[amountOfEntriesInBuffer].phone);
+		++amountOfEntriesInBuffer;
 	}
 	else
 	{
@@ -54,154 +52,130 @@ void addEntry(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuff
 	}
 }
 
-void printAllEntries()
+void printAllEntries(Entry entries[], int amountOfEntriesInBuffer)
 {
-	if (countEntriesInBase("database.txt") == 0)
+	if (amountOfEntriesInBuffer == 0)
 	{
 		printf("Записей нет\n");
 	}
 	else
 	{
-		FILE *file = fopen("database.txt", "r");
-		printf("\n");
-		while (!feof(file))
+		for (int i = 0; i < amountOfEntriesInBuffer; ++i)
 		{
-			char buffer[entryLength]="";
-			fgets(buffer, entryLength, file);
-			printf("%s", buffer);
+			printf("%s - %s\n", entries[i].name, entries[i].phone);
 		}
-		fclose(file);
 	}
 }
 
-const char *findPhone(const char fileName[], char enteredName[])
+const char *findPhone(Entry entries[], int amountOfEntriesInBuffer, char enteredName[])
 {
-	FILE *file = fopen(fileName, "r");
-	if (file)
+	for (int i = 0; i < amountOfEntriesInBuffer; ++i)
 	{
-		while (!feof(file))
+		if (strcmp(entries[i].name, enteredName) == 0)
 		{
-			char nameInBuffer[50] = "";
-			fscanf(file, "%s", nameInBuffer);
-			static char phoneNumberInBuffer[50] = "";
-			fscanf(file, "%s", phoneNumberInBuffer);
-			if (strcmp(nameInBuffer, enteredName) == 0)
-			{
-				return phoneNumberInBuffer;
-			}
+			return entries[i].phone;
 		}
-		fclose(file);
 	}
 	return "Номер телефона не найден";
 }
 
-const char *findName(const char fileName[], char enteredPhone[])
+const char *findName(Entry entries[], int amountOfEntriesInBuffer, char enteredPhone[])
 {
-	FILE *file = fopen(fileName, "r");
-	if (file)
+	for (int i = 0; i < amountOfEntriesInBuffer; ++i)
 	{
-		while (!feof(file))
+		if (strcmp(entries[i].phone, enteredPhone) == 0)
 		{
-			static char nameInBuffer[50] = "";
-			fscanf(file, "%s", nameInBuffer);
-			char phoneNumberInBuffer[50] = "";
-			fscanf(file, "%s", phoneNumberInBuffer);
-			if (strcmp(phoneNumberInBuffer, enteredPhone) == 0)
-			{
-				return nameInBuffer;
-			}
+			return entries[i].name;
 		}
-		fclose(file);
 	}
 	return "Имя не найдено";
 }
 
-bool saveData(char (&entries)[baseSize][entryLength], int &amountOfEntriesInBuffer, const char fileName[])
+void saveData(Entry entries[], int amountOfEntriesInBuffer)
 {
 	if (amountOfEntriesInBuffer == 0)
 	{
-		return false;
+		printf("Записей нет\n");
 	}
 	else
 	{
-		FILE *file = fopen(fileName, "a");
+		FILE *file = fopen("database.txt", "w");
 		for (int i = 0; i < amountOfEntriesInBuffer; ++i)
 		{
-			fprintf(file, "%s\n", entries[i]);
+			fprintf(file, "%s - %s\n", entries[i].name, entries[i].phone);
 		}
 		fclose(file);
-		amountOfEntriesInBuffer = 0;
-		memset(entries, 0, sizeof(entries));
-	}
-	return true;
+		printf("Данные сохранены\n");
+	}		
 }
 
-bool testSavingData()
+bool fileReadTest(Entry testEntries[])
 {
-	char entries[baseSize][entryLength] = 
+	if (countEntriesInBuffer(testEntries, "test.txt") == 4)
 	{
-		"Петя 346-32-87", 
-		"Вася 89102347856", 
-		"Оля 1233445", 
-		"Вова +7(911)777-50-05"
-	};
-	int amountOfEntries = 4;
-	const char fileName[9] = "test.txt";
-	return saveData(entries, amountOfEntries, fileName) && countEntriesInBase(fileName) == 4;
+		return strcmp(testEntries[0].name, "Петя Иванов") == 0 &&
+			strcmp(testEntries[0].phone, "346-32-87") == 0 &&
+			strcmp(testEntries[1].name, "Вася") == 0 &&
+			strcmp(testEntries[1].phone, "89102347856") == 0 &&
+			strcmp(testEntries[2].name, "Оля") == 0 &&
+			strcmp(testEntries[2].phone, "123 34 45") == 0 &&
+			strcmp(testEntries[3].name, "Вова") == 0 &&
+			strcmp(testEntries[3].phone, "+7(911)777-50-05") == 0;
+	}
+	return false;
 }
 
-bool testPhoneSearch()
+bool testPhoneSearch(Entry testEntries[])
 {
-	char name[5] = "Оля";
-	const char phone[8] = "1233445";
-	const char *result = findPhone("test.txt", name);
+	char name[12] = "Петя Иванов";
+	const char phone[10] = "346-32-87";
+	const char *result = findPhone(testEntries, 4, name);
 	return strcmp(result, phone) == 0;
 }
 
-bool testNameSearch()
+bool testNameSearch(Entry testEntries[])
 {
-	const char name[5] = "Вова";
-	char phone[17] = "+7(911)777-50-05";
-	const char *result = findName("test.txt", phone);
+	const char name[4] = "Оля";
+	char phone[10] = "123 34 45";
+	const char *result = findName(testEntries, 4, phone);
 	return strcmp(result, name) == 0;
 }
 
 bool tests()
 {
-	FILE *file = fopen("test.txt", "w");
-	fclose(file);
-	if (!testSavingData())
+	Entry test[20] = {};
+	if (!fileReadTest(test))
 	{
-		printf("Ошибка в сохранении данных\n");
+		printf("Ошибка в чтении файла\n");
 		return false;
 	}
-	if (!testPhoneSearch())
+	if (!testPhoneSearch(test))
 	{
 		printf("Ошибка в поиске номера телефона\n");
 		return false;
 	}
-	if (!testNameSearch())
+	if (!testNameSearch(test))
 	{
 		printf("Ошибка в поиске имени\n");
 		return false;
 	}
-	return true;
+return true;
 }
 
 int main()
 {
-	SetConsoleOutputCP(1251);
-	SetConsoleCP(1251);
+	system("chcp 1251>nul");
 	if (!tests())
 	{
 		return 1;
 	}
-	printf("Телефонный справочник\n");
-	int amountOfEntriesInBuffer = 0;
-	char entriesInBuffer[baseSize][entryLength] = {};
-	char input[100] = "";
+	const int baseSize = 100;
+	Entry buffer[baseSize] = {};
+	int entriesCounter = countEntriesInBuffer(buffer, "database.txt");
+	
+	char input[100] = {};
 	bool shouldGoOut = false;
-
+	printf("Телефонный справочник\n");
 	while (!shouldGoOut)
 	{
 		begin();
@@ -217,36 +191,29 @@ int main()
 			shouldGoOut = true;
 			break;
 		case '1':
-			addEntry(entriesInBuffer, amountOfEntriesInBuffer);
+			addEntry(buffer, entriesCounter);
 			break;
 		case '2':
-			printAllEntries();
+			printAllEntries(buffer, entriesCounter);
 			break;
 		case '3':
 		{
 			printf("Введите имя: ");
-			char name[50] = "";
-			scanf("%s", name);
-			printf("%s\n", findPhone("database.txt", name));
+			char name[50] = {};
+			scanf("\n%[^\n]", name);
+			printf("%s\n", findPhone(buffer, entriesCounter, name));
 			break;
 		}
 		case '4':
 		{
 			printf("Введите номер телефона: ");
-			char phone[50] = "";
-			scanf("%s", phone);
-			printf("%s\n", findName("database.txt", phone));
+			char phone[50] = {};
+			scanf("\n%[^\n]", phone);
+			printf("%s\n", findName(buffer, entriesCounter, phone));
 			break;
 		}
 		case '5':
-			if (saveData(entriesInBuffer, amountOfEntriesInBuffer, "database.txt"))
-			{
-				printf("Данные сохранены\n");
-			}
-			else
-			{
-				printf("Новых записей нет\n");
-			}
+			saveData(buffer, entriesCounter);
 			break;
 		default:
 			printf("Неверный ввод, попробуйте ещё раз.\n");
