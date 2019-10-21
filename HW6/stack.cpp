@@ -1,14 +1,14 @@
 #include "stack.h"
 
-void push(StackElement **top, char value)
+void push(StackElement **top, int value)
 {
 	StackElement *element = new StackElement{value, *top};
 	*top = element;
 }
 
-char pop(StackElement **top)
+int pop(StackElement **top)
 {
-	char value = (*top)->value;
+	int value = (*top)->value;
 	StackElement *temp = (*top)->next;
 	delete *top;
 	*top = temp;
