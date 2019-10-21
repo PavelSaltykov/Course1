@@ -38,12 +38,9 @@ bool checkString(char string[], StackElement *top)
 			{
 				return false;
 			}
-			else
+			else if (pop(&top) != openBracket(string[i]))
 			{
-				if (pop(&top) != openBracket(string[i]))
-				{
-					return false;
-				}
+				return false;
 			}
 			break;
 		}
