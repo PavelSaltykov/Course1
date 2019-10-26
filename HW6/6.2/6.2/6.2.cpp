@@ -18,8 +18,9 @@ char openBracket(char closedBracket)
 	}
 }
 
-bool checkString(char string[], StackElement **top)
+bool checkString(char string[])
 {
+	Stack *stack = createStack();
 	const int length = strlen(string);
 	for (int i = 0; i < length; i++)
 	{
@@ -28,43 +29,41 @@ bool checkString(char string[], StackElement **top)
 		case '(':
 		case '{':
 		case '[':
-			push(top, string[i]);
+			push(stack, string[i]);
 			break;
 
 		case ')':
 		case '}':
 		case ']':
-			if (isEmpty(*top))
+			if (isEmpty(stack))
 			{
+				deleteStack(stack);
 				return false;
 			}
-			else if (pop(top) != openBracket(string[i]))
+			else if (pop(stack) != openBracket(string[i]))
 			{
+				deleteStack(stack);
 				return false;
 			}
 			break;
 		}
 	}
-	return isEmpty(*top);
+	const bool stringBalanced = isEmpty(stack);
+	deleteStack(stack);
+	return stringBalanced;
 }
 
 bool tests()
 {
-	StackElement *topForTest1 = nullptr;
 	char testString1[5] = "({)}";
-	const bool test1Passed = !checkString(testString1, &topForTest1);
-	delete topForTest1;
+	const bool test1Passed = !checkString(testString1);
 
-	StackElement *topForTest2 = nullptr;
 	char testString2[9] = "({}[()])";
-	const bool test2Passed = checkString(testString2, &topForTest2);
-	delete topForTest2;
+	const bool test2Passed = checkString(testString2);
 
-	StackElement *topForTest3 = nullptr;
 	char testString3[24] = "string without brackets";
-	const bool test3Passed = checkString(testString3, &topForTest3);
-	delete topForTest3;
-		
+	const bool test3Passed = checkString(testString3);
+	
 	return test1Passed && test2Passed && test3Passed;
 }
 
@@ -76,11 +75,9 @@ int main()
 		return 1;
 	}
 
-	StackElement *top = nullptr;
 	printf("Enter the string: ");
 	char string[1000] = {};
-	fgets(string, 1000, stdin);
-	printf(checkString(string, &top) ? "balanced" : "unbalanced");
-	delete top;
+	scanf("%[^\n]%*c", string);
+	printf(checkString(string) ? "balanced" : "unbalanced");
 	return 0;
 }
