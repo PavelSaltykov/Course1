@@ -1,21 +1,45 @@
 #include "stack.h"
 
-void push(StackElement **top, int value)
+struct StackElement
 {
-	StackElement *element = new StackElement{value, *top};
-	*top = element;
+	int value;
+	StackElement *next;
+};
+
+struct Stack
+{
+	StackElement *top = nullptr;
+};
+
+void push(Stack *stack, int value)
+{
+	stack->top = new StackElement {value, stack->top};
 }
 
-int pop(StackElement **top)
+int pop(Stack *stack)
 {
-	int value = (*top)->value;
-	StackElement *temp = (*top)->next;
-	delete *top;
-	*top = temp;
-	return value;
+	int topValue = stack->top->value;
+	StackElement *temp = stack->top->next;
+	delete stack->top;
+	stack->top = temp;
+	return topValue;
 }
 
-bool isEmpty(StackElement *top)
+bool isEmpty(Stack *stack)
 {
-	return top == nullptr;
+	return stack->top == nullptr;
+}
+
+void deleteStack(Stack *stack)
+{
+	while (!isEmpty(stack))
+	{
+		pop(stack);
+	}
+	delete stack;
+}
+
+Stack *createStack()
+{
+	return new Stack;
 }
