@@ -2,53 +2,39 @@
 #include <string.h>
 #include "..\..\stack.h"
 
-void performOperation(char operation, StackElement **top)
+void performOperation(char operation, Stack *stack)
 {
-	const int operand2 = pop(top);
-	const int operand1 = pop(top);
+	const int operand2 = pop(stack);
+	const int operand1 = pop(stack);
 	int result = 0;
 	if (operation == '+')
 	{
 		result = operand1 + operand2;
-		push(top, result);
 	}
 	else if (operation == '-')
 	{
 		result = operand1 - operand2;
-		push(top, result);
 	}
 	else if (operation == '*')
 	{
 		result = operand1 * operand2;
-		push(top, result);
 	}
 	else
 	{
 		result = operand1 / operand2;
-		push(top, result);
 	}
+	push(stack, result);
 }
 
-bool onlyOneElementOnStack(StackElement *top)
+bool calculate(char postfixExpression[], int &result)
 {
-	if (!isEmpty(top))
-	{
-		return isEmpty(top->next);
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool calculate(char postfixExpression[], StackElement **top)
-{
+	Stack *stack = createStack();
 	const int length = strlen(postfixExpression);
 	for (int i = 0; i < length; i++)
 	{
 		if (postfixExpression[i] - '0' >= 0 && postfixExpression[i] - '0' < 10)
 		{
-			push(top, postfixExpression[i] - '0');
+			push(stack, postfixExpression[i] - '0');
 		}
 		else switch (postfixExpression[i])
 		{
@@ -56,79 +42,80 @@ bool calculate(char postfixExpression[], StackElement **top)
 		case '-':
 		case '*':
 		case '/':
-			if (!isEmpty(*top))
+			if (!isEmpty(stack))
 			{
-				if (!isEmpty((*top)->next) && !(postfixExpression[i] == '/' && (*top)->value == 0))
+				const int topValue = pop(stack);
+				if (!isEmpty(stack) && !(postfixExpression[i] == '/' && topValue == 0))
 				{
-					performOperation(postfixExpression[i], top);
+					push(stack, topValue);
+					performOperation(postfixExpression[i], stack);
 				}
 				else
 				{
+					deleteStack(stack);
 					return false;
 				}
 			}
 			else
 			{
+				deleteStack(stack);
 				return false;
 			}
 			break;
 		}
 	}
-	return onlyOneElementOnStack(*top);
+	bool resultFound = false;
+	if (!isEmpty(stack))
+	{
+		result = pop(stack);
+		if (isEmpty(stack))
+		{
+			resultFound = true;
+		}
+	}
+	deleteStack(stack);
+	return resultFound;
 }
 
 bool tests()
 {
 	bool testsPassed = true;
-	StackElement *topForTest1 = nullptr;
+	int answer = 0;
 	char testString1[4] = "+ 9";
-	testsPassed = testsPassed && !calculate(testString1, &topForTest1);
-	delete topForTest1;
+	testsPassed = testsPassed && !calculate(testString1, answer);
 
-	StackElement *topForTest2 = nullptr;
 	char testString2[4] = "9 +";
-	testsPassed = testsPassed && !calculate(testString2, &topForTest2);
-	delete topForTest2;
+	testsPassed = testsPassed && !calculate(testString2, answer);
 
-	StackElement *topForTest3 = nullptr;
 	char testString3[4] = "9 9";
-	testsPassed = testsPassed && !calculate(testString3, &topForTest3);
-	delete topForTest3;
+	testsPassed = testsPassed && !calculate(testString3, answer);
 
-	StackElement *topForTest4 = nullptr;
 	char testString4[16] = "without numbers";
-	testsPassed = testsPassed && !calculate(testString4, &topForTest4);
-	delete topForTest4;
+	testsPassed = testsPassed && !calculate(testString4, answer);
 
-	StackElement *topForTest5 = nullptr;
 	char testString5[12] = "9 0 / 5 3 +";
-	testsPassed = testsPassed && !calculate(testString5, &topForTest5);
-	delete topForTest5;
+	testsPassed = testsPassed && !calculate(testString5, answer);
 
-	StackElement *topForTest6 = nullptr;
 	char testString6[12] = "5 4 * 9 3 -";
-	testsPassed = testsPassed && !calculate(testString6, &topForTest6);
-	delete topForTest6;
+	testsPassed = testsPassed && !calculate(testString6, answer);
 
-	StackElement *topForTest7 = nullptr;
 	char testString7[14] = "9 6 - 1 2 + *";
 	bool test7Passed = false;
-	if (calculate(testString7, &topForTest7))
+	answer = 0;
+	if (calculate(testString7, answer))
 	{
-		test7Passed = pop(&topForTest7) == 9;
+		test7Passed = answer == 9;
 	}
 	testsPassed = testsPassed && test7Passed;
-	delete topForTest7;
 
-	StackElement *topForTest8 = nullptr;
 	char testString8[10] = "3 4 2 * +";
 	bool test8Passed = false;
-	if (calculate(testString8, &topForTest8))
+	answer = 0;
+	if (calculate(testString8, answer))
 	{
-		test8Passed = pop(&topForTest8) == 11;
+		test8Passed = answer == 11;
 	}
 	testsPassed = testsPassed && test8Passed;
-	delete topForTest8;
 	return testsPassed;
 }
 
@@ -140,19 +127,17 @@ int main()
 		return 1;
 	}
 
-	StackElement *top = nullptr;
 	printf("Enter postfix expression: ");
 	char string[1000] = {};
-	fgets(string, 1000, stdin);
-	if (calculate(string, &top))
+	scanf("%[^\n]", string);
+	int result = 0;
+	if (calculate(string, result))
 	{
-		const int result = pop(&top);
 		printf("Result: %d\n", result);
 	}
 	else
 	{
 		printf("Input error\n");
 	}
-	delete top;
 	return 0;
 }
