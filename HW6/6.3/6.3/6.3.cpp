@@ -16,6 +16,7 @@ bool balancedBrackets(char string[])
 		{
 			if (isEmpty(stack))
 			{
+				delete stack;
 				return false;
 			}
 			pop(stack);
