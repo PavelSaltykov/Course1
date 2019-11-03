@@ -12,8 +12,17 @@ void begin()
 
 bool tests()
 {
-
-	return true;
+	List *testList = createList();
+	addValue(testList, 1);
+	addValue(testList, 2);
+	addValue(testList, 0);
+	const bool isSorted = checkSortedList(testList);
+	
+	const bool test1Passed = deleteValue(testList, 0);
+	const bool test2Passed = deleteValue(testList, 2);
+	const bool test3Passed = !deleteValue(testList, 2);
+	deleteList(testList);
+	return isSorted && test1Passed && test2Passed && test3Passed;
 }
 
 int main()

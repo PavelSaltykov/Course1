@@ -64,6 +64,25 @@ void printList(List *list)
 	}
 }
 
+bool checkSortedList(List *list)
+{
+	if (!isEmpty(list))
+	{
+		Node *current = list->head->next;
+		Node *previous = list->head;
+		while (current != nullptr)
+		{
+			if (current->value < previous->value)
+			{
+				return false;
+			}
+			previous = current;
+			current = current->next;
+		}
+	}
+	return true;
+}
+
 void deleteList(List *list)
 {
 	while (!isEmpty(list))

@@ -23,6 +23,10 @@ bool deleteValue(List *list, int value);
 // функция принимает указатель на список.
 void printList(List *list);
 
+// Проверка списка на сортированность;
+// функция принимает указатель на список.
+bool checkSortedList(List *list);
+
 // Удаление списка;
 // функция принимает указатель на список.
 void deleteList(List *list);
