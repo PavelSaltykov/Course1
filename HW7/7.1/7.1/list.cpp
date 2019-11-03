@@ -24,74 +24,44 @@ bool isEmpty(List *list)
 
 void addValue(List *list, int value)
 {
-	if (isEmpty(list))
+	Node *current = list->head;
+	Node *previous = nullptr;
+	while (current != nullptr && current->value < value)
 	{
-		list->head = new Node {value, nullptr};
+		previous = current;
+		current = current->next;
 	}
-	else
-	{
-		Node *first = list->head;
-		Node *previous = nullptr;
-		while (!isEmpty(list) && list->head->value < value)
-		{
-			previous = list->head;
-			list->head = list->head->next;
-		}
-		if (previous != nullptr)
-		{
-			previous->next = new Node {value, list->head};
-			list->head = first;
-		}
-		else
-		{
-			list->head = new Node {value, first};
-		}
-	}
+	Node *newNode = new Node {value, current};
+	previous == nullptr ? list->head = newNode : previous->next = newNode;
 }
 
 bool deleteValue(List *list, int value)
 {
-	if (isEmpty(list))
-	{
-		return false;
-	}
-	Node *first = list->head;
+	Node *current = list->head;
 	Node *previous = nullptr;
-	while (!isEmpty(list) && list->head->value != value)
+	while (current != nullptr && current->value != value)
 	{
-		previous = list->head;
-		list->head = list->head->next;
+		previous = current;
+		current = current->next;
 	}
-	if (isEmpty(list))
+	if (current == nullptr)
 	{
-		list->head = first;
 		return false;
 	}
-	if (previous != nullptr)
-	{
-		Node *temp = list->head->next;
-		delete list->head;
-		previous->next = temp;
-		list->head = first;
-	}
-	else
-	{
-		Node *temp = list->head->next;
-		delete list->head;
-		list->head = temp;
-	}
+	Node *temp = current->next;
+	delete current;
+	previous == nullptr ? list->head = temp : previous->next = temp;
 	return true;
 }
 
 void printList(List *list)
 {
-	Node *first = list->head;
-	while (!isEmpty(list))
+	Node *current = list->head;
+	while (current != nullptr)
 	{
-		printf("%d ", list->head->value);
-		list->head = list->head->next;
+		printf("%d ", current->value);
+		current = current->next;
 	}
-	list->head = first;
 }
 
 void deleteList(List *list)

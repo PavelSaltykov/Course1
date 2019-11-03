@@ -10,8 +10,19 @@ void begin()
 	printf(" 3 - print list\n");
 }
 
+bool tests()
+{
+
+	return true;
+}
+
 int main()
 {
+	if (!tests())
+	{
+		printf("Testing error\n");
+		return 1;
+	}
 	char input[100] = {};
 	bool shouldGoOut = false;
 	List *list = createList();
