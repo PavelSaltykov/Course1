@@ -9,12 +9,10 @@ int count(int numberOfWarriors, int periodicity)
 		addValue(list, i);
 	}
 
-	const bool shouldMoveBeginningOfList = true;
 	while (!onlyHeadInList(list))
 	{
-		deleteValue(list, periodicity, shouldMoveBeginningOfList);
+		deleteValue(list, periodicity);
 	}
-
 	const int lastWarrior = headValue(list);
 	deleteList(list);
 	return lastWarrior;
@@ -22,12 +20,16 @@ int count(int numberOfWarriors, int periodicity)
 
 bool tests()
 {
-
-	return true;
+	return count(10, 2) == 5 && count(10, 3) == 4 && count(10, 8) == 1 && count(1, 3) == 1 && count(5, 6) == 4;
 }
 
 int main()
 {
+	if (!tests())
+	{
+		printf("Testing error\n");
+		return 1;
+	}
 
 	return 0;
 }

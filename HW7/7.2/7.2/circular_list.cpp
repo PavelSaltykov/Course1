@@ -58,12 +58,9 @@ void deleteValue(List *list, int positionNumber, bool shouldMoveHead)
 		current = current->next;
 	}
 
-	if (current == list->head || shouldMoveHead)
+	if (current == list->head || current == list->tail || shouldMoveHead)
 	{
 		list->head = current->next;
-	}
-	if (current == list->tail || shouldMoveHead)
-	{
 		list->tail = previous;
 	}
 	previous->next = current->next;
@@ -74,7 +71,7 @@ void deleteList(List *list)
 {
 	while (list->head != list->tail)
 	{
-		deleteValue(list, 1, true);
+		deleteValue(list, 1);
 	}
 	delete list->head;
 	delete list;
