@@ -13,9 +13,9 @@ int count(int numberOfWarriors, int periodicity)
 	{
 		deleteValue(list, periodicity);
 	}
-	const int lastWarrior = headValue(list);
+	const int survivorWarrior = headValue(list);
 	deleteList(list);
-	return lastWarrior;
+	return survivorWarrior;
 }
 
 bool tests()
@@ -31,5 +31,21 @@ int main()
 		return 1;
 	}
 
+	printf("Enter the number of warriors: ");
+	int numberOfWarriors = 0;
+	scanf("%d", &numberOfWarriors);
+
+	printf("Enter killing periodicity: ");
+	int periodicity = 0;
+	scanf("%d", &periodicity);
+
+	if (numberOfWarriors < 1 || periodicity < 1)
+	{
+		printf("Invalid input\n");
+		return 1;
+	}
+
+	const int survivorWarrior = count(numberOfWarriors, periodicity);
+	printf("Position number of survivor warrior: %d\n", survivorWarrior);
 	return 0;
 }

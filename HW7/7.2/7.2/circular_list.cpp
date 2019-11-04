@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "circular_list.h"
 
 struct Node
