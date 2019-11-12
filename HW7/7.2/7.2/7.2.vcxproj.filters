@@ -19,7 +19,7 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="circular_list.cpp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

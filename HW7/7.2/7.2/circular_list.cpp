@@ -47,7 +47,7 @@ void addValue(List *list, int value)
 	}
 }
 
-void deleteValue(List *list, int positionNumber, bool shouldMoveHead)
+void deleteValue(List *list, int positionNumber)
 {
 	Node *current = list->head;
 	Node *previous = list->tail;
@@ -57,11 +57,8 @@ void deleteValue(List *list, int positionNumber, bool shouldMoveHead)
 		current = current->next;
 	}
 
-	if (current == list->head || current == list->tail || shouldMoveHead)
-	{
-		list->head = current->next;
-		list->tail = previous;
-	}
+	list->head = current->next;
+	list->tail = previous;
 	previous->next = current->next;
 	delete current;
 }
