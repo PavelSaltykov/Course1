@@ -27,6 +27,7 @@ int main()
 	}
 	fclose(file);
 	delete file;
+	list = mergeSort(list);
 	deleteList(list);
 
 	return 0;
