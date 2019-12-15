@@ -27,6 +27,10 @@ int listLength(List *list);
 // принимает указатель на список.
 void deleteHead(List *list);
 
+// Проверка списка на сортированность;
+// функция принимает указатель на список, булевый флаг (true - проверка по имени, false - по номеру);
+bool checkSort(List *list, bool byName);
+
 // Вывод списка на экран;
 // функция принимает указатель на список.
 void printList(List *list);

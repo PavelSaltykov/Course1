@@ -74,6 +74,36 @@ void deleteHead(List *list)
 	list->head = temp;
 }
 
+bool checkSort(List *list, bool byName)
+{
+	if (isEmpty(list))
+	{
+		return true;
+	}
+	Entry *current = list->head->next;
+	Entry *previous = list->head;
+	while (current != nullptr)
+	{
+		int comparison = 0;
+		if (byName)
+		{
+			comparison = strcmp(current->name, previous->name);
+		}
+		else
+		{
+			comparison = strcmp(current->phone, previous->phone);
+		}
+
+		if (comparison < 0)
+		{
+			return false;
+		}
+		previous = current;
+		current = current->next;
+	}
+	return true;
+}
+
 void printList(List *list)
 {
 	if (isEmpty(list))

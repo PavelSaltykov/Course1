@@ -44,7 +44,7 @@ List *merge(List *list1, List *list2, bool sortByName)
 List *mergeSort(List *list, bool sortByName)
 {
 	const int length = listLength(list);
-	if (length == 1)
+	if (length <= 1)
 	{
 		return list;
 	}
