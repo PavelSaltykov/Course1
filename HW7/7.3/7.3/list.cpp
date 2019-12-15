@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include "list.h"
 
@@ -12,6 +13,7 @@ struct List
 {
 	int length = 0;
 	Entry *head = nullptr;
+	Entry *tail = nullptr;
 };
 
 List *createList()
@@ -26,75 +28,64 @@ bool isEmpty(List *list)
 
 void addEntry(List *list, char *name, char *phone)
 {
+	list->length++;
 	char *newName = new char[strlen(name) + 1];
 	char *newPhone = new char[strlen(phone) + 1];
-	list->head = new Entry {newName, newPhone, list->head};
 	strcpy(newName, name);
 	strcpy(newPhone, phone);
-	list->length++;
+	Entry *newEntry = new Entry {newName, newPhone, nullptr};
+
+	if (isEmpty(list))
+	{
+		list->head = newEntry;
+		list->tail = list->head;
+		return;
+	}
+	list->tail->next = newEntry;
+	list->tail = list->tail->next;
 }
 
-List *merge(List *list1, List *list2)
+char *returnNameFromHead(List *list)
 {
-	List *newList = createList();
-	newList->length = list1->length + list2->length;
-
-	if (strcmp(list1->head->name, list2->head->name) < 0)
-	{
-		newList->head = list1->head;
-		list1->head = list1->head->next;
-	}
-	else
-	{
-		newList->head = list2->head;
-		list2->head = list2->head->next;
-	}
-
-	Entry *current = newList->head;
-	for (int i = 1; i < newList->length; ++i)
-	{
-		if (!isEmpty(list1) && (isEmpty(list2) || strcmp(list1->head->name, list2->head->name) < 0))
-		{
-			current->next = list1->head;
-			list1->head = list1->head->next;
-		}
-		else
-		{
-			current->next = list2->head;
-			list2->head = list2->head->next;
-		}
-		current = current->next;
-	}
-	delete list1;
-	delete list2;
-	return newList;
+	return list->head->name;
 }
 
-List *mergeSort(List *list)
+char *returnPhoneFromHead(List *list)
 {
-	if (list->length == 1)
-	{
-		return list;
-	}
+	return list->head->phone;
+}
 
+int listLength(List *list)
+{
+	return list->length;
+}
+
+void deleteHead(List *list)
+{
+	if (isEmpty(list))
+	{
+		return;
+	}
+	list->length--;
+	Entry *temp = list->head->next;
+	delete list->head->name;
+	delete list->head->phone;
+	delete list->head;
+	list->head = temp;
+}
+
+void printList(List *list)
+{
+	if (isEmpty(list))
+	{
+		return;
+	}
 	Entry *current = list->head;
-	for (int i = 1; i < list->length / 2; ++i)
+	while (current != nullptr)
 	{
+		printf("%s - %s\n", current->name, current->phone);
 		current = current->next;
 	}
-	List *list1 = createList();
-	list1->head = list->head;
-	list1->length = list->length / 2;
-
-	List *list2 = createList();
-	list2->head = current->next;
-	current->next = nullptr;
-	list2->length = list->length - list1->length;
-	
-	delete list;
-	list1 = mergeSort(list1);
-	list2 = mergeSort(list2);
-	return merge(list1, list2);
 }
 
 void deleteList(List *list)

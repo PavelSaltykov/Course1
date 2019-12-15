@@ -153,9 +153,14 @@
   <ItemGroup>
     <ClCompile Include="7.3.cpp" />
     <ClCompile Include="list.cpp" />
+    <ClCompile Include="mergeSort.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="list.h" />
+    <ClInclude Include="mergeSort.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="entries.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
