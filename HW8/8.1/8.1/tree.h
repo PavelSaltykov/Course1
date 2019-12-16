@@ -19,6 +19,10 @@ char *getValue(Tree *tree, int key);
 // функция принимает указатель на дерево, ключ.
 bool contains(Tree *tree, int key);
 
+// Удаление значения по ключу;
+// функция принимает указатель на дерево, ключ.
+void deleteValue(Tree *tree, int key);
+
 // Удаление дерева;
 // функция принимает указатель на дерево.
 void deleteTree(Tree *tree);

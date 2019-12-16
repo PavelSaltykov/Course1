@@ -25,16 +25,12 @@ bool isEmpty(Tree *tree)
 	return tree->root == nullptr;
 }
 
-bool isLeaf(Node *node)
-{
-	return node->leftChild == nullptr && node->rightChild == nullptr;
-}
-
-void insert(Node *node, Node *parent, int key, char *value)
+void insert(Node *node, int key, char *value)
 {
 	if (key == node->key)
 	{
 		strcpy(node->value, value);
+		delete value;
 		node->key = key;
 		return;
 	}
@@ -46,7 +42,7 @@ void insert(Node *node, Node *parent, int key, char *value)
 			node->leftChild = new Node {key, value, node, nullptr, nullptr};
 			return;
 		}
-		insert(node->leftChild, node, key, value);
+		insert(node->leftChild, key, value);
 	}
 
 	if (key > node->key)
@@ -56,7 +52,7 @@ void insert(Node *node, Node *parent, int key, char *value)
 			node->rightChild = new Node {key, value, node, nullptr, nullptr};
 			return;
 		}
-		insert(node->rightChild, node, key, value);
+		insert(node->rightChild, key, value);
 	}
 }
 
@@ -69,7 +65,7 @@ void addValue(Tree *tree, int key, char *value)
 		tree->root = new Node {key, newValue, nullptr, nullptr, nullptr};
 		return;
 	}
-	insert(tree->root, nullptr, key, newValue);
+	insert(tree->root, key, newValue);
 }
 
 char *get(Node *node, int key)
@@ -110,6 +106,117 @@ bool find(Node *node, int key)
 bool contains(Tree *tree, int key)
 {
 	return find(tree->root, key);
+}
+
+Node *findNodeClosestToMiddle(Node *node)
+{
+	Node *rightmostNodeOnTheLeft = node->leftChild;
+	int leftPathLength = 1;
+	while (rightmostNodeOnTheLeft->rightChild != nullptr)
+	{
+		rightmostNodeOnTheLeft = rightmostNodeOnTheLeft->rightChild;
+		leftPathLength++;
+	}
+
+	Node *leftmostNodeOnTheLeft = node->rightChild;
+	int rightPathLength = 1;
+	while (leftmostNodeOnTheLeft->leftChild != nullptr)
+	{
+		leftmostNodeOnTheLeft = leftmostNodeOnTheLeft->leftChild;
+		rightPathLength++;
+	}
+
+	return (leftPathLength > rightPathLength) ? rightmostNodeOnTheLeft : leftmostNodeOnTheLeft;
+}
+
+void copyData(Node *node1, Node *node2)
+{
+	strcpy(node1->value, node2->value);
+	node1->key = node2->key;
+}
+
+void deleteNode(Node *node, int key)
+{
+	if (node == nullptr)
+	{
+		return;
+	}
+
+	if (key == node->key)
+	{
+		if (node->rightChild != nullptr && node->leftChild != nullptr)
+		{
+			Node *helpNode = findNodeClosestToMiddle(node);
+			copyData(node, helpNode);
+			deleteNode(helpNode, helpNode->key);
+			return;
+		}
+
+		if (node->rightChild == nullptr)
+		{
+			if (node->leftChild != nullptr)
+			{
+				node->leftChild->parent = node->parent;
+			}
+			key < node->parent->key ? node->parent->leftChild = node->leftChild : node->parent->rightChild = node->leftChild;
+		}
+		else 
+		{
+			if (node->rightChild != nullptr)
+			{
+				node->rightChild->parent = node->parent;
+			}
+			key < node->parent->key ? node->parent->leftChild = node->rightChild : node->parent->rightChild = node->rightChild;
+		}
+		delete node->value;
+		delete node;
+		return;
+	}
+
+	key < node->key ? deleteNode(node->leftChild, key) : deleteNode(node->rightChild, key);
+}
+
+void deleteRoot(Tree *tree)
+{
+	if (tree->root->rightChild != nullptr && tree->root->leftChild != nullptr)
+	{
+		Node *helpNode = findNodeClosestToMiddle(tree->root);
+		copyData(tree->root, helpNode);
+		deleteNode(helpNode, helpNode->key);
+		return;
+	}
+
+	Node *newRoot = nullptr;
+	if (tree->root->rightChild == nullptr)
+	{
+		newRoot = tree->root->leftChild;
+	}
+	else
+	{
+		newRoot = tree->root->rightChild;
+	}
+	if (newRoot != nullptr)
+	{
+		newRoot->parent = nullptr;
+	}
+	delete tree->root->value;
+	delete tree->root;
+	tree->root = newRoot;
+}
+
+void deleteValue(Tree *tree, int key)
+{
+	if (isEmpty(tree))
+	{
+		return;
+	}
+
+	if (tree->root->key == key)
+	{
+		deleteRoot(tree);
+		return;
+	}
+	deleteNode(tree->root, key);
 }
 
 void deleteChildren(Node *node)
