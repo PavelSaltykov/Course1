@@ -36,8 +36,8 @@ List *merge(List *list1, List *list2, bool sortByName)
 	{
 		transferElements(list2, newList, listLength(list2));
 	}
-	delete list1;
-	delete list2;
+	deleteList(list1);
+	deleteList(list2);
 	return newList;
 }
 
@@ -53,7 +53,7 @@ List *mergeSort(List *list, bool sortByName)
 	transferElements(list, leftList, length / 2);
 	List *rightList = createList();
 	transferElements(list, rightList, length - length / 2);
-	delete list;
+	deleteList(list);
 
 	leftList = mergeSort(leftList, sortByName);
 	rightList = mergeSort(rightList, sortByName);
