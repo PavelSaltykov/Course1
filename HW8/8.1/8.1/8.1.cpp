@@ -12,8 +12,28 @@ void begin()
 
 bool tests()
 {
+	Tree *tree = createTree();
+	char value[5] = "asdf";
+	bool testsPassed = !contains(tree, 1);
 
-	return true;
+	addValue(tree, 25, value);
+	addValue(tree, 10, value);
+	addValue(tree, 40, value);
+	addValue(tree, 45, value);
+	addValue(tree, 35, value);
+	addValue(tree, 15, value);
+	addValue(tree, 20, value);
+	addValue(tree, 7, value);
+
+	testsPassed = testsPassed && contains(tree, 7) && !contains(tree, 5);
+	deleteValue(tree, 25);
+	deleteValue(tree, 10);
+	deleteValue(tree, 7);
+	deleteValue(tree, 5);
+	testsPassed = testsPassed && !contains(tree, 7) && !contains(tree, 25) && contains(tree, 40);
+
+	deleteTree(tree);
+	return testsPassed;
 }
 
 int main()
