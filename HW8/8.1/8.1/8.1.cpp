@@ -77,7 +77,7 @@ int main()
 			char *value = getValue(tree, key);
 			printf((value == nullptr) ? "Value for this key not found" : "Value: %s", value);
 			printf("\n");
-			delete value;
+			delete[] value;
 			break;
 		}
 		case 3:

@@ -29,9 +29,8 @@ void insert(Node *node, int key, char *value)
 {
 	if (key == node->key)
 	{
-		strcpy(node->value, value);
-		delete value;
-		node->key = key;
+		delete[] node->value;
+		node->value = value;
 		return;
 	}
 
@@ -82,7 +81,7 @@ char *get(Node *node, int key)
 		return value;
 	}
 
-	key < node->key ? get(node->leftChild, key) : get(node->rightChild, key);
+	return key < node->key ? get(node->leftChild, key) : get(node->rightChild, key);
 }
 
 char *getValue(Tree *tree, int key)
@@ -102,7 +101,7 @@ bool find(Node *node, int key)
 		return true;
 	}
 
-	key < node->key ? find(node->leftChild, key) : find(node->rightChild, key);
+	return key < node->key ? find(node->leftChild, key) : find(node->rightChild, key);
 }
 
 bool contains(Tree *tree, int key)
