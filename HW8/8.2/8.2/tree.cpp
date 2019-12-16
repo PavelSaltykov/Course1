@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "tree.h"
 
 struct Node
@@ -18,9 +19,30 @@ Tree *createTree()
 	return new Tree;
 }
 
+bool isEmpty(Tree *tree)
+{
+	return tree->root == nullptr;
+}
+
+bool isLeaf(Node *node)
+{
+	return node->leftChild == nullptr && node->rightChild == nullptr;
+}
+
 bool isOperation(char symbol)
 {
 	return symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/';
+}
+
+int number(char *string, int &numberPosition)
+{
+	int number = 0;
+	while (string[numberPosition] >= '0' && string[numberPosition] <= '9')
+	{
+		number = number * 10 + (string[numberPosition] - '0');
+		numberPosition++;
+	}
+	return number;
 }
 
 Node *newNode(char *string, int &positionNumber)
@@ -40,7 +62,7 @@ Node *newNode(char *string, int &positionNumber)
 	}
 	else
 	{
-		node->operand = string[positionNumber] - '0';
+		node->operand = number(string, positionNumber);
 	}
 	return node;
 }
@@ -58,6 +80,28 @@ Tree *build(char *string)
 	tree->root->leftChild = newNode(string, positionNumber);
 	tree->root->rightChild = newNode(string, positionNumber);
 	return tree;
+}
+
+void printNode(Node *node)
+{
+	if (isLeaf(node))
+	{
+		printf("%d ", node->operand);
+		return;
+	}
+	printf("%c ", node->operation);
+	printNode(node->leftChild);
+	printNode(node->rightChild);
+
+}
+
+void printTree(Tree *tree)
+{
+	if (isEmpty(tree))
+	{
+		return;
+	}
+	printNode(tree->root);
 }
 
 
