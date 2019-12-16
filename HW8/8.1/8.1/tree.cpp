@@ -77,7 +77,9 @@ char *get(Node *node, int key)
 
 	if (key == node->key)
 	{
-		return node->value;
+		char *value = new char[strlen(node->value) + 1];
+		strcpy(value, node->value);
+		return value;
 	}
 
 	key < node->key ? get(node->leftChild, key) : get(node->rightChild, key);
@@ -129,10 +131,10 @@ Node *findNodeClosestToMiddle(Node *node)
 	return (leftPathLength > rightPathLength) ? rightmostNodeOnTheLeft : leftmostNodeOnTheLeft;
 }
 
-void copyData(Node *node1, Node *node2)
+void copyData(Node *destination, Node *source)
 {
-	strcpy(node1->value, node2->value);
-	node1->key = node2->key;
+	strcpy(destination->value, source->value);
+	destination->key = source->key;
 }
 
 void deleteNode(Node *node, int key)

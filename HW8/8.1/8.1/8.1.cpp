@@ -1,30 +1,84 @@
-﻿
+﻿#include <stdio.h>
 #include "tree.h"
+
+void begin()
+{
+	printf("Enter:\n 0 - log off\n");
+	printf(" 1 - Add value by key\n");
+	printf(" 2 - Get value by key\n");
+	printf(" 3 - Check key availability\n");
+	printf(" 4 - Delete key and value\n");
+}
+
+bool tests()
+{
+
+	return true;
+}
 
 int main()
 {
+	if (!tests())
+	{
+		printf("Testing error\n");
+		return 1;
+	}
+
+	int input = 0;
+	bool shouldGoOut = false;
 	Tree *tree = createTree();
-	char val[2] = "1";
-	addValue(tree, 10, val); 
-	addValue(tree, 5, val);
-	addValue(tree, 12, val);
-	addValue(tree, 3, val);
-	addValue(tree, 6, val);
-	addValue(tree, 7, val);
+	while (!shouldGoOut)
+	{
+		begin();
+		scanf("%d", &input);
+		int key = 0;
+		switch (input)
+		{
+		case 0:
+			shouldGoOut = true;
+			break;
+		case 1:
+		{
+			printf("Enter key: ");
+			scanf("%d", &key);
 
-	char *v = getValue(tree, 7);
-	const bool cont = contains(tree, 6);
-	
-	deleteValue(tree, 5);
-	deleteValue(tree, 12);
-	deleteValue(tree, 10);
-	deleteValue(tree, 10);
-	deleteValue(tree, 6);
-	deleteValue(tree, 7);
-	deleteValue(tree, 3);
-	deleteValue(tree, 1);
-	delete tree;
+			printf("Enter value: ");
+			char value[1000] = {};
+			scanf("%s", value);
 
-	//deleteTree(tree);
+			addValue(tree, key, value);
+			break;
+		}
+		case 2:
+		{
+			printf("Enter key: ");
+			scanf("%d", &key);
+
+			char *value = getValue(tree, key);
+			printf((value == nullptr) ? "Value for this key not found" : "Value: %s", value);
+			printf("\n");
+			delete value;
+			break;
+		}
+		case 3:
+			printf("Enter key: ");
+			scanf("%d", &key);
+
+			printf(contains(tree, key) ? "The key exists" : "The key does not exist");			
+			printf("\n");
+			break;
+		case 4:
+			printf("Enter key: ");
+			scanf("%d", &key);
+
+			deleteValue(tree, key);
+			break;
+		default:
+			printf("Invalid input, try again\n");
+			break;
+		}
+		printf("\n");
+	}
+	deleteTree(tree);
 	return 0;
 }
