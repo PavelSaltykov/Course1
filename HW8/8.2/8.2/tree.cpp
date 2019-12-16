@@ -104,7 +104,34 @@ void printTree(Tree *tree)
 	printNode(tree->root);
 }
 
+int calculateSubtree(Node *node)
+{
+	if (isLeaf(node))
+	{
+		return node->operand;
+	}
+	const int operand1 = calculateSubtree(node->leftChild);
+	const int operand2 = calculateSubtree(node->rightChild);
+	const char operation = node->operation;
+	if (operation == '+')
+	{
+		return operand1 + operand2;
+	}
+	if (operation == '-')
+	{
+		return operand1 - operand2;
+	}
+	if (operation == '*')
+	{
+		return operand1 * operand2;
+	}
+	return operand1 / operand2;
+}
 
+int calculate(Tree *tree)
+{
+	return calculateSubtree(tree->root);
+}
 
 void deleteChildren(Node *node)
 {
