@@ -42,7 +42,7 @@ int main()
 	Tree *tree = build(prefix);
 	printf("Prefix expression: ");
 	printTree(tree);
-	printf("\nReult: %d", calculate(tree));
+	printf("\nResult: %d", calculate(tree));
 
 	deleteTree(tree);
 	return 0;

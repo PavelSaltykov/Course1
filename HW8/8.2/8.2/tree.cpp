@@ -69,16 +69,9 @@ Node *newNode(char *string, int &positionNumber)
 
 Tree *build(char *string)
 {
-	int positionNumber = 0;
+	int positionNumber = -1;
 	Tree *tree = createTree();
-	while (string[positionNumber] == ' ' || string[positionNumber] == '(')
-	{
-		positionNumber++;
-	}
-	tree->root = new Node;
-	tree->root->operation = string[positionNumber];
-	tree->root->leftChild = newNode(string, positionNumber);
-	tree->root->rightChild = newNode(string, positionNumber);
+	tree->root = newNode(string, positionNumber);
 	return tree;
 }
 
@@ -92,7 +85,6 @@ void printNode(Node *node)
 	printf("%c ", node->operation);
 	printNode(node->leftChild);
 	printNode(node->rightChild);
-
 }
 
 void printTree(Tree *tree)
