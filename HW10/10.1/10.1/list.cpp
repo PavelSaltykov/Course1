@@ -1,3 +1,5 @@
+#include <string.h>
+#include <stdio.h>
 #include "list.h"
 
 struct Node
@@ -10,7 +12,6 @@ struct Node
 struct List
 {
 	Node *head = nullptr;
-	Node *tail = nullptr;
 	int length = 0;
 };
 
@@ -24,29 +25,89 @@ bool isEmpty(List *list)
 	return list->head == nullptr;
 }
 
-void addValue(List *list, char *value)
+int listLength(List *list)
 {
-	list->length++;
-	if (!isEmpty(list))
-	{
-		list->tail->next = new Node {value, nullptr};
-		list->tail = list->tail->next;
-		return;
-	}
-	list->head = new Node {value, nullptr};
-	list->tail = list->head;
+	return list->length;
 }
 
+bool addNewValueToList(List *list, char *value, int quantity)
+{
+	Node *current = list->head;
+	Node *previous = nullptr;
+	while (current != nullptr && strcmp(current->word, value) != 0)
+	{
+		previous = current;
+		current = current->next;
+	}
+	if (current == nullptr)
+	{
+		list->length++;
+		char *newValue = new char[strlen(value) + 1];
+		Node *newNode = new Node {newValue, quantity, nullptr};
+		strcpy(newValue, value);
+		previous == nullptr ? list->head = newNode : previous->next = newNode;
+		return true;
+	}
+	current->counter += quantity;
+	return false;
+}
 
+bool listContainsValue(List *list, char *value)
+{
+	Node *current = list->head;
+	while (current != nullptr)
+	{
+		if (strcmp(current->word, value) == 0)
+		{
+			return true;
+		}
+		current = current->next;
+	}
+	return false;
+}
+
+char *returnValueFromHead(List *list)
+{
+	if (isEmpty(list))
+	{
+		return nullptr;
+	}
+	return list->head->word;
+}
+
+int quantityOfValuesFromHead(List *list)
+{
+	return list->head->counter;
+}
+
+void deleteValueFromHead(List *list)
+{
+	if (isEmpty(list))
+	{
+		return;
+	}
+	list->length--;
+	Node *headNode = list->head;
+	list->head = list->head->next;
+	delete[] headNode->word;
+	delete headNode;
+}
+
+void printList(List *list)
+{
+	Node *current = list->head;
+	while (current != nullptr)
+	{
+		printf("%s(%d) ", current->word, current->counter);
+		current = current->next;
+	}
+}
 
 void deleteList(List *list)
 {
 	while (!isEmpty(list))
 	{
-		Node *temp = list->head->next;
-		delete[] list->head->word;
-		delete list->head;
-		list->head = temp;
+		deleteValueFromHead(list);
 	}
 	delete list;
 }
