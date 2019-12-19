@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include "tree.h"
 
 bool test(char *string, int answer)
