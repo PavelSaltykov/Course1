@@ -1,0 +1,6 @@
+A naive string matching algorithm compares the given pattern against all positions in the given text. 
+Each comparison takes time proportional to the length of the pattern, and the number of positions is 
+proportional to the length of the text. Therefore, the worst-case time for such a method is proportional 
+to the product of the two lengths. In many practical cases, this time can be significantly reduced by 
+cutting short the comparison at each position as soon as a mismatch is found, but this idea cannot guarantee 
+any speedup.
