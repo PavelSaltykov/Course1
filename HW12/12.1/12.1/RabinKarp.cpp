@@ -17,7 +17,7 @@ int polynomialHash(char *string, int length, int *helpArray)
 
 int ringHash(int helpHash, char newSymbol)
 {
-	return (helpHash * x + newSymbol) % q;
+	return ((helpHash + q) % q * x + newSymbol) % q;
 }
 
 int rabinKarp(char *string, char *substring)
@@ -29,7 +29,7 @@ int rabinKarp(char *string, char *substring)
 	for (int i = 0; i < substringLength; ++i)
 	{
 		degreesOfX[i] = help;
-		help *= x;
+		help = help * x % q;
 	}
 	help = degreesOfX[substringLength - 1];
 
