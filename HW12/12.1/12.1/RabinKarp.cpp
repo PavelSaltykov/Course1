@@ -2,7 +2,7 @@
 #include <climits>
 #include "RabinKarp.h"
 
-const int q = INT_MAX;
+const int q = 991;
 const int x = 3;
 
 int polynomialHash(char *string, int length, int *helpArray)
@@ -31,7 +31,7 @@ int rabinKarp(char *string, char *substring)
 		degreesOfX[i] = help;
 		help *= x;
 	}
-	help /= x;
+	help = degreesOfX[substringLength - 1];
 
 	const int substringHash = polynomialHash(substring, substringLength, degreesOfX);
 	int helpHash = polynomialHash(string, substringLength, degreesOfX);
