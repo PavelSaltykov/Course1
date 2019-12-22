@@ -84,5 +84,6 @@ char *comments(char *fileName)
 			buffer[strlen(buffer)] = symbol;
 		}
 	}
+	fclose(file);
 	return comments;
 }
