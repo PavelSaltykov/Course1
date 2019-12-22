@@ -148,10 +148,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="13.2.cpp" />
+    <ClCompile Include="searchComments.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt" />
     <Text Include="table.txt" />
+    <Text Include="test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="searchComments.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

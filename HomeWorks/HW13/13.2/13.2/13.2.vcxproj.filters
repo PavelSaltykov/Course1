@@ -18,6 +18,9 @@
     <ClCompile Include="13.2.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="searchComments.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="table.txt">
@@ -26,5 +29,13 @@
     <Text Include="input.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="test.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="searchComments.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
