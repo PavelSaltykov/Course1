@@ -33,11 +33,7 @@ void giveCity(int **graph, int size, int capitalNumber, int *distance, bool *use
 
 void distributeCities(int **graph, int size, int *capitals, int numberOfCapitals, List **states)
 {
-	bool *used = new bool[size];
-	for (int i = 0; i < size; ++i)
-	{
-		used[i] = false;
-	}
+	bool *used = new bool[size] {};
 
 	int **distance = new int *[numberOfCapitals];
 	for (int i = 0; i < numberOfCapitals; ++i)

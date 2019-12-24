@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt" />
+    <Text Include="testGraph.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.h" />

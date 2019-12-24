@@ -49,7 +49,7 @@ bool compareLists(List *list1, List *list2)
 {
 	Node *current1 = list1->head;
 	Node *current2 = list2->head;
-	while (current1 != nullptr)
+	while (current1 != nullptr && current2 != nullptr)
 	{
 		if (current1->value != current2->value)
 		{
@@ -58,7 +58,7 @@ bool compareLists(List *list1, List *list2)
 		current1 = current1->next;
 		current2 = current2->next;
 	}
-	return current2 == nullptr;
+	return current1 == nullptr && current2 == nullptr;
 }
 
 void deleteList(List *list)

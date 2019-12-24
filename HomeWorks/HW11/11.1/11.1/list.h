@@ -15,6 +15,9 @@ void addValue(List *list, int value);
 // функция принимает указатель на список.
 void printList(List *list);
 
+// Функция возвращает true, если списки совпадают.
+bool compareLists(List *list1, List *list2);
+
 // Удаление списка;
 // функция принимает указатель на список.
 void deleteList(List *list);

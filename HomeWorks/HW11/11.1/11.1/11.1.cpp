@@ -2,15 +2,66 @@
 #include "list.h"
 #include "algorithm.h"
 
-bool tests()
+bool test()
 {
+	const int size = 5;
+	int **testGraph = new int *[size];
+	for (int i = 0; i < size; ++i)
+	{
+		testGraph[i] = new int[size] {};
+	}
 
-	return true;
+	FILE *file = fopen("testGraph.txt", "r");
+	for (int i = 0; i < size; ++i)
+	{
+		for (int j = 0; j < size; ++j)
+		{
+			fscanf(file, "%d", &testGraph[i][j]);
+		}
+	}
+	fclose(file);
+
+	int capitals[2] = {0, 1};
+	const int numberOfCapitals = 2;
+
+	List **states = new List *[numberOfCapitals];
+	for (int i = 0; i < numberOfCapitals; ++i)
+	{
+		states[i] = createList();
+	}
+
+	List *answer1 = createList();
+	addValue(answer1, 0);
+	addValue(answer1, 2);
+	addValue(answer1, 3);
+	addValue(answer1, 4);
+
+	List *answer2 = createList();
+	addValue(answer2, 1);
+
+	distributeCities(testGraph, size, capitals, numberOfCapitals, states);
+
+	for (int i = 0; i < size; ++i)
+	{
+		delete[] testGraph[i];
+	}
+	delete[] testGraph;
+
+	const bool testPassed = compareLists(states[0], answer1) && compareLists(states[1], answer2);
+
+	for (int i = 0; i < numberOfCapitals; ++i)
+	{
+		deleteList(states[i]);
+	}
+	delete[] states;
+	deleteList(answer1);
+	deleteList(answer2);
+	return testPassed;
 }
 
 int main()
 {
-	if (!tests())
+	if (!test())
 	{
 		printf("Testing error\n");
 		return 1;
@@ -26,14 +77,10 @@ int main()
 	int size = 0;
 	fscanf(file, "%d", &size);
 
-	int **graph = new int*[size];
+	int **graph = new int *[size];
 	for (int i = 0; i < size; ++i)
 	{
-		graph[i] = new int[size];
-		for (int j = 0; j < size; ++j)
-		{
-			graph[i][j] = 0;
-		}
+		graph[i] = new int[size] {};
 	}
 
 	int numberOfRoads = 0;
