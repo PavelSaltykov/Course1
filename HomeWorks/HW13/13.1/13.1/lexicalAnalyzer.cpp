@@ -58,7 +58,12 @@ bool lexicalAnalyzer(char *string)
 			return string[i] == '\0';
 
 		case 4:
-			if (isdigit(string[i]) || string[i] == '+' || string[i] == '-')
+			if (isdigit(string[i]))
+			{
+				state = 6;
+				break;
+			}
+			if (string[i] == '+' || string[i] == '-')
 			{
 				state = 5;
 				break;
@@ -68,7 +73,15 @@ bool lexicalAnalyzer(char *string)
 		case 5:
 			if (isdigit(string[i]))
 			{
-				state = 5;
+				state = 6;
+				break;
+			}
+			return false;
+
+		case 6:
+			if (isdigit(string[i]))
+			{
+				state = 6;
 				break;
 			}
 			return string[i] == '\0';

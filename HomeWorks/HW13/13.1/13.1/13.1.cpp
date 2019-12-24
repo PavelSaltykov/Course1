@@ -19,6 +19,7 @@ int main()
 
 	char sequence[100] = {};
 	fscanf(file, "%s", sequence);
+	fclose(file);
 
 	printf(lexicalAnalyzer(sequence) ? "This is a number\n" : "This isn't a number\n");
 	return 0;
