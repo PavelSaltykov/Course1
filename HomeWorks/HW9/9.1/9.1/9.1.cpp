@@ -31,7 +31,7 @@ bool tests()
 	deleteValue(tree, 42);
 	deleteValue(tree, 40);
 	deleteValue(tree, 25);
-	testsPassed = testsPassed && !contains(tree, 7) && !contains(tree, 42) && contains(tree, 25);
+	testsPassed = testsPassed && !contains(tree, 7) && !contains(tree, 42) && contains(tree, 45);
 
 	deleteTree(tree);
 	return testsPassed;
