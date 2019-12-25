@@ -5,6 +5,7 @@ struct Node
 {
 	int key;
 	char *value;
+	int height;
 	Node *parent;
 	Node *leftChild;
 	Node *rightChild;
@@ -25,6 +26,79 @@ bool isEmpty(Tree *tree)
 	return tree->root == nullptr;
 }
 
+int getHeight(Node *node)
+{
+	return node != nullptr ? node->height : -1;
+}
+
+int getBalanceFactor(Node *node)
+{
+	return getHeight(node->rightChild) - getHeight(node->leftChild);
+}
+
+void updateHeight(Node *node)
+{
+	int heightLeft = getHeight(node->leftChild);
+	int heightRight = getHeight(node->rightChild);
+	node->height = ((heightLeft > heightRight) ? heightLeft : heightRight) + 1;
+}
+
+Node *rotateRight(Node *root)
+{
+	Node *pivot = root->leftChild;
+	root->leftChild = pivot->rightChild;
+	pivot->parent = root->parent;
+	if (pivot->rightChild != nullptr)
+	{
+		pivot->rightChild->parent = root;
+	}
+
+	pivot->rightChild = root;
+	root->parent = pivot;
+	updateHeight(root);
+	updateHeight(pivot);
+	return pivot;
+}
+
+Node *rotateLeft(Node *root)
+{
+	Node *pivot = root->rightChild;
+	root->rightChild = pivot->leftChild;
+	pivot->parent = root->parent;
+	if (pivot->leftChild != nullptr)
+	{
+		pivot->leftChild->parent = root;
+	}
+
+	pivot->leftChild = root;
+	root->parent = pivot;
+	updateHeight(root);
+	updateHeight(pivot);
+	return pivot;
+}
+
+Node *balance(Node *node)
+{
+	updateHeight(node);
+	if (getBalanceFactor(node) == 2)
+	{
+		if (getBalanceFactor(node->rightChild) < 0)
+		{
+			node->rightChild = rotateRight(node->rightChild);
+		}
+		return rotateLeft(node);
+	}
+	if (getBalanceFactor(node) == -2)
+	{
+		if (getBalanceFactor(node->leftChild) > 0)
+		{
+			node->leftChild = rotateLeft(node->leftChild);
+		}
+		return rotateRight(node);
+	}
+	return node;
+}
+
 void insert(Node *node, int key, char *value)
 {
 	if (key == node->key)
@@ -38,20 +112,22 @@ void insert(Node *node, int key, char *value)
 	{
 		if (node->leftChild == nullptr)
 		{
-			node->leftChild = new Node {key, value, node, nullptr, nullptr};
+			node->leftChild = new Node {key, value, 0, node, nullptr, nullptr};
 			return;
 		}
 		insert(node->leftChild, key, value);
+		node->leftChild = balance(node->leftChild);
 	}
 
 	if (key > node->key)
 	{
 		if (node->rightChild == nullptr)
 		{
-			node->rightChild = new Node {key, value, node, nullptr, nullptr};
+			node->rightChild = new Node {key, value, 0, node, nullptr, nullptr};
 			return;
 		}
 		insert(node->rightChild, key, value);
+		node->rightChild = balance(node->rightChild);
 	}
 }
 
@@ -61,10 +137,11 @@ void addValue(Tree *tree, int key, char *value)
 	strcpy(newValue, value);
 	if (isEmpty(tree))
 	{
-		tree->root = new Node {key, newValue, nullptr, nullptr, nullptr};
+		tree->root = new Node {key, newValue, 0, nullptr, nullptr, nullptr};
 		return;
 	}
 	insert(tree->root, key, newValue);
+	tree->root = balance(tree->root);
 }
 
 char *get(Node *node, int key)
