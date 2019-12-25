@@ -236,7 +236,7 @@ void deleteNode(Node *node, int key)
 			{
 				node->leftChild->parent = node->parent;
 			}
-			key < node->parent->key)? node->parent->leftChild = node->leftChild: node->parent->rightChild = node->leftChild;
+			key < node->parent->key ? node->parent->leftChild = node->leftChild : node->parent->rightChild = node->leftChild;
 		}
 		else
 		{
@@ -251,7 +251,6 @@ void deleteNode(Node *node, int key)
 		return;
 	}
 
-	Node *parent = node->parent;
 	if (key < node->key)
 	{
 		deleteNode(node->leftChild, key);
@@ -259,6 +258,10 @@ void deleteNode(Node *node, int key)
 	else
 	{
 		deleteNode(node->rightChild, key);
+	}
+	if (node->parent != nullptr)
+	{
+		node->key < node->parent->key ? node->parent->leftChild = balance(node) : node->parent->rightChild = balance(node);
 	}
 }
 
@@ -269,6 +272,7 @@ void deleteRoot(Tree *tree)
 		Node *helpNode = findNodeClosestToMiddle(tree->root);
 		copyData(tree->root, helpNode);
 		deleteNode(helpNode, helpNode->key);
+		tree->root = balance(tree->root);
 		return;
 	}
 
@@ -287,7 +291,7 @@ void deleteRoot(Tree *tree)
 	}
 	delete[] tree->root->value;
 	delete tree->root;
-	/tree->root = balance(newRoot);
+	tree->root = balance(newRoot);
 }
 
 void deleteValue(Tree *tree, int key)
@@ -303,6 +307,7 @@ void deleteValue(Tree *tree, int key)
 		return;
 	}
 	deleteNode(tree->root, key);
+	tree->root = balance(tree->root);
 }
 
 void deleteChildren(Node *node)

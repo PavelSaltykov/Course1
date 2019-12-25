@@ -29,6 +29,8 @@ bool tests()
 	deleteValue(tree, 10);
 	deleteValue(tree, 5);
 	deleteValue(tree, 42);
+	deleteValue(tree, 40);
+	deleteValue(tree, 25);
 	testsPassed = testsPassed && !contains(tree, 7) && !contains(tree, 42) && contains(tree, 25);
 
 	deleteTree(tree);
