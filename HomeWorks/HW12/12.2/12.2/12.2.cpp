@@ -1,5 +1,4 @@
-﻿
-#include "Prim.h"
+﻿#include "Prim.h"
 
 int main()
 {
