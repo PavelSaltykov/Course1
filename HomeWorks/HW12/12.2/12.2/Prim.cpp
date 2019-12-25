@@ -7,7 +7,7 @@ void addEdgesToQueue(int **graph, int currentVertex, int size, bool *used, Prior
 	{
 		if (graph[currentVertex][i] != 0 && !used[i])
 		{
-			enqueue(queueOfEdges, currentVertex, graph[currentVertex][i], i);
+			enqueue(queueOfEdges, currentVertex, i, graph[currentVertex][i]);
 		}
 	}
 }
@@ -23,9 +23,10 @@ int **createMinimalSpanningTree(int **graph, int size)
 	}
 
 	const int root = 0;
+	used[root] = true;
 	addEdgesToQueue(graph, root, size, used, queueOfEdges);
 
-	while(!isEmpty(queueOfEdges))
+	while (!isEmpty(queueOfEdges))
 	{
 		int vertex1 = 0;
 		int vertex2 = 0;
@@ -39,4 +40,7 @@ int **createMinimalSpanningTree(int **graph, int size)
 			addEdgesToQueue(graph, currentVertex, size, used, queueOfEdges);
 		}
 	}
+	delete[] used;
+	deleteQueue(queueOfEdges);
+	return spanningTree;
 }

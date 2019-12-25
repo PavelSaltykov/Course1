@@ -27,7 +27,7 @@ void enqueue(PriorityQueue *queue, int vertex1, int vertex2, int edgeLength)
 {
 	QueueElement *current = queue->front;
 	QueueElement *previous = nullptr;
-	while (current != nullptr && current->edgeLength >= edgeLength)
+	while (current != nullptr && current->edgeLength <= edgeLength)
 	{
 		previous = current;
 		current = current->next;
@@ -42,12 +42,12 @@ int dequeue(PriorityQueue *queue, int &vertex1, int &vertex2)
 	{
 		return -1;
 	}
-	QueueElement *first = queue->front;
-	queue->front = queue->front->next;
-	int firstEdgeLength = first->edgeLength;
+	QueueElement *next = queue->front->next;
+	int firstEdgeLength = queue->front->edgeLength;
 	vertex1 = queue->front->vertex1;
 	vertex2 = queue->front->vertex2;
-	delete first;
+	delete queue->front;
+	queue->front = next;
 	return firstEdgeLength;
 }
 

@@ -7,7 +7,6 @@ struct PriorityQueue;
 // функция возвращает указатель на очередь.
 PriorityQueue *createQueue();
 
-// 
 bool isEmpty(PriorityQueue *queue);
 
 // Добавление значения в очередь с приоритетами;
