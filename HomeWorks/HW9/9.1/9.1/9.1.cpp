@@ -23,14 +23,13 @@ bool tests()
 	addValue(tree, 42, value);
 	addValue(tree, 7, value);
 	addValue(tree, 5, value);
-	addValue(tree, 20, value);
 
 	testsPassed = testsPassed && contains(tree, 7) && !contains(tree, 1);
-	/*deleteValue(tree, 25);
-	deleteValue(tree, 10);
 	deleteValue(tree, 7);
-	deleteValue(tree, 5);*/
-	//testsPassed = testsPassed && !contains(tree, 7) && !contains(tree, 25) && contains(tree, 40);
+	deleteValue(tree, 10);
+	deleteValue(tree, 5);
+	deleteValue(tree, 42);
+	testsPassed = testsPassed && !contains(tree, 7) && !contains(tree, 42) && contains(tree, 25);
 
 	deleteTree(tree);
 	return testsPassed;
@@ -91,7 +90,7 @@ int main()
 			printf("Enter key: ");
 			scanf("%d", &key);
 
-			//deleteValue(tree, key);
+			deleteValue(tree, key);
 			break;
 		default:
 			printf("Invalid input, try again\n");

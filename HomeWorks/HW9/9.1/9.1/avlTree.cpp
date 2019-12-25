@@ -236,7 +236,7 @@ void deleteNode(Node *node, int key)
 			{
 				node->leftChild->parent = node->parent;
 			}
-			key < node->parent->key ? node->parent->leftChild = node->leftChild : node->parent->rightChild = node->leftChild;
+			key < node->parent->key)? node->parent->leftChild = node->leftChild: node->parent->rightChild = node->leftChild;
 		}
 		else
 		{
@@ -251,7 +251,15 @@ void deleteNode(Node *node, int key)
 		return;
 	}
 
-	key < node->key ? deleteNode(node->leftChild, key) : deleteNode(node->rightChild, key);
+	Node *parent = node->parent;
+	if (key < node->key)
+	{
+		deleteNode(node->leftChild, key);
+	}
+	else
+	{
+		deleteNode(node->rightChild, key);
+	}
 }
 
 void deleteRoot(Tree *tree)
@@ -279,7 +287,7 @@ void deleteRoot(Tree *tree)
 	}
 	delete[] tree->root->value;
 	delete tree->root;
-	tree->root = newRoot;
+	/tree->root = balance(newRoot);
 }
 
 void deleteValue(Tree *tree, int key)
