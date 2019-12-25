@@ -79,6 +79,10 @@ Node *rotateLeft(Node *root)
 
 Node *balance(Node *node)
 {
+	if (node == nullptr)
+	{
+		return node;
+	}
 	updateHeight(node);
 	if (getBalanceFactor(node) == 2)
 	{

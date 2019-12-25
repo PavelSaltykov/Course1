@@ -17,6 +17,8 @@ bool tests()
 	bool testsPassed = !contains(tree, 1);
 
 	addValue(tree, 25, value);
+	deleteValue(tree, 25);
+	addValue(tree, 25, value);
 	addValue(tree, 10, value);
 	addValue(tree, 40, value);
 	addValue(tree, 45, value);
