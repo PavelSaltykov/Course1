@@ -213,7 +213,11 @@ Node *findNodeClosestToMiddle(Node *node)
 
 void copyData(Node *destination, Node *source)
 {
-	strcpy(destination->value, source->value);
+	char *newValue = new char[strlen(source->value) + 1];
+	strcpy(newValue, source->value);
+	delete[] destination->value;
+
+	destination->value = newValue;
 	destination->key = source->key;
 }
 
