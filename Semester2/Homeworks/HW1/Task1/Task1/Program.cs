@@ -4,7 +4,7 @@ namespace Task1
 {
     class Program
     {
-        private static int Factorial(int n) => n <= 1 ? 1 : n * Factorial(n - 1);
+        private static int Factorial(int number) => number <= 1 ? 1 : number * Factorial(number - 1);
 
         static void Main(string[] args)
         {
