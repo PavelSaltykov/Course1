@@ -6,15 +6,16 @@ namespace Task2
     {
         private static int Fibonacci(int number)
         {
-            if (number <= 0)
+            int[] tempArray = { 0, 1, 1 };
+            for (int i = 0; i < number; i++)
             {
-                return 0;
+                tempArray[2] = tempArray[0] + tempArray[1];
+                for (int j = 0; j < 2; j++)
+                {
+                    tempArray[j] = tempArray[j + 1];
+                }
             }
-            if (number == 1)
-            {
-                return 1;
-            }
-            return Fibonacci(number - 1) + Fibonacci(number - 2);
+            return tempArray[2];
         }
 
         static void Main(string[] args)
