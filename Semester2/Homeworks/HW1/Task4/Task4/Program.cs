@@ -8,7 +8,7 @@ namespace Task4
         {
             for (var i = 0; i < array.Length; ++i)
             {
-                Console.Write(array[i] + " ");
+                Console.Write($"{array[i]} ");
             }
         }
 
@@ -28,12 +28,14 @@ namespace Task4
             {
                 for (var m = 0; m < n; ++m)
                 {
-                    output[currentPosition] = array[iPosition, jPosition += jStep];
+                    jPosition += jStep;
+                    output[currentPosition] = array[iPosition, jPosition];
                     ++currentPosition;
                 }
                 for (var m = 0; m < n; ++m)
                 {
-                    output[currentPosition] = array[iPosition += iStep, jPosition];
+                    iPosition += iStep;
+                    output[currentPosition] = array[iPosition, jPosition];
                     ++currentPosition;
                 }
                 iStep = -iStep;
@@ -42,7 +44,8 @@ namespace Task4
 
             for (var n = 0; n < size - 1; ++n)
             {
-                output[currentPosition] = array[iPosition, jPosition += jStep];
+                jPosition += jStep;
+                output[currentPosition] = array[iPosition, jPosition];
                 ++currentPosition;
             }
             return output;
@@ -60,7 +63,7 @@ namespace Task4
                 for (var j = 0; j < size; ++j)
                 {
                     array[i, j] = random.Next(0, 10);
-                    Console.Write(array[i, j] + " ");
+                    Console.Write($"{array[i, j]} ");
                 }
                 Console.WriteLine();
             }
