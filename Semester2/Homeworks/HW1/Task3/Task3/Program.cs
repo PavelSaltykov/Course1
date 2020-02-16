@@ -21,19 +21,19 @@ namespace Task3
         static void Main(string[] args)
         {
             var array = new int[10];
+            var random = new Random();
             Console.Write("Array: ");
             for (var i = 0; i < array.Length; ++i)
             {
-                var random = new Random();
                 array[i] = random.Next(-10, 10);
-                Console.Write(array[i] + " ");
+                Console.Write($"{array[i]} ");
             }
             SortByBubble(array);
 
             Console.Write("\nSorted array: ");
             for (var i = 0; i < array.Length; ++i)
             {
-                Console.Write(array[i] + " ");
+                Console.Write($"{array[i]} ");
             }
         }
     }
