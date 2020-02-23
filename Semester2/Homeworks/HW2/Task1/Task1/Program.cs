@@ -8,11 +8,11 @@ namespace Task1
         {
             var list = new List();
             list.AddValue(1, 0);
-            Console.WriteLine($"Size: {list.GetSize()}");
+            Console.WriteLine($"Size: {list.Size}");
             Console.WriteLine();
 
             list.DeleteValue(0);
-            Console.WriteLine($"Size: {list.GetSize()}");
+            Console.WriteLine($"Size: {list.Size}");
             Console.WriteLine($"Value: {list.GetValue(0)}");
             Console.WriteLine();
 
@@ -33,7 +33,7 @@ namespace Task1
 
             Console.WriteLine();
             list.Clear();
-            Console.WriteLine($"Size: {list.GetSize()}");
+            Console.WriteLine($"Size: {list.Size}");
         }
     }
 }

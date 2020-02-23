@@ -4,7 +4,6 @@ namespace Task1
 {
     class List
     {
-        private int size;
         private Node head;
 
         private class Node
@@ -19,13 +18,13 @@ namespace Task1
             public Node next;
         }
 
-        public int GetSize() => size;
+        public int Size { get; private set; }
 
-        public bool IsEmpty() => size == 0;
+        public bool IsEmpty { get; private set; }
 
         public void AddValue(int value, int position)
         {
-            if (position < 0 || position > size)
+            if (position < 0 || position > Size)
             {
                 return;
             }
@@ -46,12 +45,12 @@ namespace Task1
             {
                 previous.next = new Node(value, current);
             }
-            size++;
+            Size++;
         }
 
         public bool DeleteValue(int position)
         {
-            if (position < 0 || position > size - 1)
+            if (position < 0 || position > Size - 1)
             {
                 return false;
             }
@@ -72,13 +71,13 @@ namespace Task1
             {
                 previous.next = current.next;
             }
-            size--;
+            Size--;
             return true;
         }
 
         public int GetValue(int position)
         {
-            if (position < 0 || position > size - 1)
+            if (position < 0 || position > Size - 1)
             {
                 return -1;
             }
@@ -93,7 +92,7 @@ namespace Task1
 
         public bool SetValue(int value, int position)
         {
-            if (position < 0 || position > size - 1)
+            if (position < 0 || position > Size - 1)
             {
                 return false;
             }
@@ -110,7 +109,7 @@ namespace Task1
         public void Print()
         {
             var current = head;
-            for (var i = 0; i < size; ++i)
+            for (var i = 0; i < Size; ++i)
             {
                 Console.Write($"{current.value} ");
                 current = current.next;
@@ -120,7 +119,8 @@ namespace Task1
         public void Clear()
         {
             head = null;
-            size = 0;
+            Size = 0;
+            IsEmpty = true;
         }
     }
 }
