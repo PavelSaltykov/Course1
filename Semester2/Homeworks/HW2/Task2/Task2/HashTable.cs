@@ -8,6 +8,8 @@ namespace Task2
         {
             private Node head;
 
+            public bool IsEmpty { get; private set; } = true;
+
             private class Node
             {
                 public Node(string value, Node next)
@@ -23,6 +25,7 @@ namespace Task2
             public void AddValue(string value)
             {
                 head = new Node(value, head);
+                IsEmpty = false;
             }
             
             public bool DeleteValue(string value)
@@ -36,6 +39,7 @@ namespace Task2
                         if (previous == null)
                         {
                             head = head.next;
+                            IsEmpty = head == null;
                             return true;
                         }
                         previous.next = current.next;
@@ -61,18 +65,33 @@ namespace Task2
                 return false;
             }
 
-            public void Clear()
+            public string DeleteFromHead()
             {
-                head = null;
+                if (IsEmpty)
+                {
+                    return string.Empty;
+                }
+
+                var value = head.value;
+                head = head.next;
+                IsEmpty = head == null;
+                return value;
             }
         }
 
-        private readonly int size;
-        private readonly List[] buckets;
+        private int size;
+        private float loadFactor;
+        private int amountOfElements;
+        private List[] buckets;
 
         public HashTable()
         {
             size = 20;
+            CreateBuckets();
+        }
+
+        private void CreateBuckets()
+        {
             buckets = new List[size];
             for (var i = 0; i < size; ++i)
             {
@@ -80,26 +99,65 @@ namespace Task2
             }
         }
 
+        private void Resize()
+        {
+            var tempList = new List();
+            foreach(var list in buckets)
+            {
+                while (!list.IsEmpty)
+                {
+                    var value = list.DeleteFromHead();
+                    tempList.AddValue(value);
+                }
+            }
+
+            size *= 2;
+            CreateBuckets();
+
+            while (!tempList.IsEmpty)
+            {
+                Add(tempList.DeleteFromHead());
+            }
+        }
+
         private int HashFunction(string value)
         {
             var result = 0;
-            foreach (char symbol in value)
+            foreach (var symbol in value)
             {
                 result = (result + symbol) % size;
             }
             return result;
         }
 
-        public void AddValue(string value)
+        private void Add(string value)
         {
             var hash = HashFunction(value);
             buckets[hash].AddValue(value);
         }
 
+        public void AddValue(string value)
+        {
+            Add(value);
+            amountOfElements++;
+            loadFactor = (float)amountOfElements / size;
+
+            if (loadFactor > 1)
+            {
+                Resize();
+            }
+        }
+
         public bool DeleteValue(string value)
         {
             var hash = HashFunction(value);
-            return buckets[hash].DeleteValue(value);
+            var valueDeleted = buckets[hash].DeleteValue(value);
+            if (valueDeleted)
+            {
+                amountOfElements--;
+                loadFactor = (float)amountOfElements / size;
+            }
+            return valueDeleted;
         }
 
         public bool Contains(string value)
@@ -110,10 +168,10 @@ namespace Task2
 
         public void Clear()
         {
-            foreach (List list in buckets)
-            {
-                list.Clear();
-            }
+            size = 20;
+            amountOfElements = 0;
+            loadFactor = 0;
+            CreateBuckets();
         }
     }
 }
