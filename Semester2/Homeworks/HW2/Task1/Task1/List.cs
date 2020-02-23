@@ -20,7 +20,7 @@ namespace Task1
 
         public int Size { get; private set; }
 
-        public bool IsEmpty { get; private set; }
+        public bool IsEmpty { get; private set; } = true;
 
         public bool AddValue(int value, int position)
         {
@@ -46,6 +46,7 @@ namespace Task1
                 previous.next = new Node(value, current);
             }
             Size++;
+            IsEmpty = false;
             return true;
         }
 
@@ -73,6 +74,7 @@ namespace Task1
                 previous.next = current.next;
             }
             Size--;
+            IsEmpty = Size == 0;
             return true;
         }
 
