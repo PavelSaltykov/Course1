@@ -22,11 +22,11 @@ namespace Task1
 
         public bool IsEmpty { get; private set; }
 
-        public void AddValue(int value, int position)
+        public bool AddValue(int value, int position)
         {
             if (position < 0 || position > Size)
             {
-                return;
+                return false;
             }
 
             Node previous = null;
@@ -46,6 +46,7 @@ namespace Task1
                 previous.next = new Node(value, current);
             }
             Size++;
+            return true;
         }
 
         public bool DeleteValue(int position)
@@ -75,11 +76,12 @@ namespace Task1
             return true;
         }
 
-        public int GetValue(int position)
+
+        public (bool, int) GetValue(int position)
         {
             if (position < 0 || position > Size - 1)
             {
-                return -1;
+                return (false, 0);
             }
 
             var current = head;
@@ -87,7 +89,7 @@ namespace Task1
             {
                 current = current.next;
             }
-            return current.value;
+            return (true, current.value);
         }
 
         public bool SetValue(int value, int position)
