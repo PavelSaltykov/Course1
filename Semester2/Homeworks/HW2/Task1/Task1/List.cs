@@ -76,7 +76,6 @@ namespace Task1
             return true;
         }
 
-
         public (bool, int) GetValue(int position)
         {
             if (position < 0 || position > Size - 1)
