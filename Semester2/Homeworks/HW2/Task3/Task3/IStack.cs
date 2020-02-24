@@ -7,5 +7,7 @@
         int Pop();
 
         int Peek();
+
+        void Clear();
     }
 }
