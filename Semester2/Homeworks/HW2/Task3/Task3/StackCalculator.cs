@@ -4,6 +4,12 @@
     {
         private static IStack stack;
 
+        /// <summary>
+        /// Implements the operations +, -, *, / on an arithmetic expression as a string in a postfix notation.
+        /// </summary>
+        /// <param name="postfixExpression">String in reverse Polish notation</param>
+        /// <param name="choice">True/False to use a list-based/array-based stack for calculate</param>
+        /// <returns>True and result if the postfix expression was correct, else false and 0</returns>
         public static (bool, int) Calculate(string postfixExpression, bool choice)
         {
             if (choice)
@@ -80,24 +86,22 @@
         {
             var operand2 = stack.Pop();
             var operand1 = stack.Pop();
-            int result;
             if (operation == '+')
             {
-                result = operand1 + operand2;
+                stack.Push(operand1 + operand2);
             }
             else if (operation == '-')
             {
-                result = operand1 - operand2;
+                stack.Push(operand1 - operand2);
             }
             else if (operation == '*')
             {
-                result = operand1 * operand2;
+                stack.Push(operand1 * operand2);
             }
             else
             {
-                result = operand1 / operand2;
+                stack.Push(operand1 / operand2);
             }
-            stack.Push(result);
         }
     }
 }
