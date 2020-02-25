@@ -5,12 +5,13 @@
         private int[] stackElements;
         private int counter;
 
-        public bool IsEmpty { get; private set; } = true;
-
         public StackArray()
         {
             stackElements = new int[10];
         }
+
+        public bool IsEmpty()
+            => counter == 0;
 
         public void Push(int value)
         {
@@ -21,8 +22,6 @@
 
             stackElements[counter] = value;
             counter++;
-            IsEmpty = false;
-            
         }
 
         private void Resize()
@@ -37,17 +36,13 @@
             counter--;
             var value = stackElements[counter];
             stackElements[counter] = 0;
-            IsEmpty = counter == 0;
             return value;
         }
-
-        public int Peek() => stackElements[counter - 1];
 
         public void Clear()
         {
             stackElements = new int[10];
             counter = 0;
-            IsEmpty = true;
         }
     }
 }
