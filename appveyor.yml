@@ -1,11 +1,11 @@
 image: Visual Studio 2019
 
-before_build:
-  - nuget restore myCoolHomework/Homework.sln
-
 environment:
   matrix:
   - solution_name: Semester2\Homeworks\HW2\Task3\Task3.sln
+
+before_build:
+  - nuget restore %solution_name%
 
 build_script:
   - dotnet build %solution_name%
