@@ -1,4 +1,6 @@
-﻿namespace Task3
+﻿using System;
+
+namespace Task3
 {
     class StackList : IStack
     {
@@ -26,6 +28,11 @@
 
         public int Pop()
         {
+            if (IsEmpty())
+            {
+                throw new InvalidOperationException();
+            }
+
             int value = top.value;
             top = top.next;
             return value;

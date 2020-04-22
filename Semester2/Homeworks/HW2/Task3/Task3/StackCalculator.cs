@@ -2,25 +2,14 @@
 {
     static class StackCalculator
     {
-        private static IStack stack;
-
         /// <summary>
         /// Implements the operations +, -, *, / on an arithmetic expression as a string in a postfix notation.
         /// </summary>
         /// <param name="postfixExpression">String in reverse Polish notation</param>
         /// <param name="choice">True/False to use a list-based/array-based stack for calculate</param>
         /// <returns>True and result if the postfix expression was correct, else false and 0</returns>
-        public static (bool, int) Calculate(string postfixExpression, bool choice)
-        {
-            if (choice)
-            {
-                stack = new StackList();
-            }
-            else
-            {
-                stack = new StackArray();
-            }
-
+        public static (bool, int) Calculate(string postfixExpression, IStack stack)
+        { 
             var number = string.Empty;
             foreach (char symbol in postfixExpression)
             {
@@ -60,7 +49,7 @@
                         }
 
                         stack.Push(topValue);
-                        PerformOperation(symbol);
+                        PerformOperation(symbol, stack);
                         break;
                     default:
                         return (false, 0);
@@ -82,7 +71,7 @@
             return (false, 0);
         }
 
-        private static void PerformOperation(char operation)
+        private static void PerformOperation(char operation, IStack stack)
         {
             var operand2 = stack.Pop();
             var operand1 = stack.Pop();

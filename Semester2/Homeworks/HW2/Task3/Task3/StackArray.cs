@@ -1,4 +1,6 @@
-﻿namespace Task3
+﻿using System;
+
+namespace Task3
 {
     class StackArray : IStack
     {
@@ -26,13 +28,16 @@
 
         private void Resize()
         {
-            var newElements = new int[stackElements.Length + 10];
-            stackElements.CopyTo(newElements, 0);
-            stackElements = newElements;
+            Array.Resize(ref stackElements, stackElements.Length * 2);
         }
 
         public int Pop()
         {
+            if (IsEmpty())
+            {
+                throw new InvalidOperationException();
+            }
+
             counter--;
             var value = stackElements[counter];
             stackElements[counter] = 0;
