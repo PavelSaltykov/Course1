@@ -1,14 +1,29 @@
 image: Visual Studio 2019
 
-environment:
-  matrix:
-  - solution_name: Semester2\Homeworks\HW2\Task3\Task3.sln
-
 before_build:
-  - nuget restore %solution_name%
+  - ps: |
+      $ErrorActionPreference = "Stop"
+      $directory_path = "$env:APPVEYOR_BUILD_FOLDER\Semester2\"
+      $solution_names = (Get-ChildItem -Path $directory_path -Recurse -Include *.sln).FullName
 
 build_script:
-  - dotnet build %solution_name%
+  - ps: |
+      foreach ($name in $solution_names) 
+      {
+        dotnet build $name
+        if ($LastExitCode -ne 0) 
+        { 
+          $host.SetShouldExit($LastExitCode)  
+        }
+      }
 
 test_script:
-  - dotnet test %solution_name%
+  - ps: |
+      foreach ($name in $solution_names) 
+      {
+        dotnet test $name
+        if ($LastExitCode -ne 0) 
+        { 
+          $host.SetShouldExit($LastExitCode)  
+        }
+      }
