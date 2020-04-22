@@ -6,23 +6,44 @@ namespace Task3
     {
         static void Main(string[] args)
         {
-            var stackList = new StackList();
-            var stackArray = new StackArray();
+            Console.WriteLine("Enter:");
+            Console.WriteLine("1 - use list-based stack");
+            Console.WriteLine("2 - use array-based stack");
+            Console.WriteLine("to calculate postfix expression");
 
-            Console.WriteLine("StackCalculator.Calculate(\"3 4 2 * +\", stackArray)");
-            Console.WriteLine($"Result: {StackCalculator.Calculate("3 4 2 * +", stackArray)}");
-            Console.WriteLine();
+            var input = Console.ReadLine();
+            int choice;
+            if (!int.TryParse(input, out choice))
+            {
+                Console.WriteLine("Invalid input");
+                return;
+            }
 
-            Console.WriteLine("StackCalculator.Calculate(\"106 100 -  13 17 + *\", stackList)");
-            Console.WriteLine($"Result: {StackCalculator.Calculate("106 100 -  13 17 + *", stackList)}");
-            Console.WriteLine();
+            IStack stack;
+            switch (choice)
+            {
+                case 1:
+                    stack = new StackList();
+                    break;
+                case 2:
+                    stack = new StackArray();
+                    break;
+                default:
+                    Console.WriteLine("Invalid input");
+                    return;
+            }
 
-            Console.WriteLine("StackCalculator.Calculate(\"5 4 * 9 3 -\", stackArray)");
-            Console.WriteLine($"Result: {StackCalculator.Calculate("5 4 * 9 3 -", stackArray)}");
-            Console.WriteLine();
+            Console.WriteLine("Enter postfix expression: ");
+            input = Console.ReadLine();
+            var (isCorrect, result) = StackCalculator.Calculate(input, stack);
+            
+            if (!isCorrect)
+            {
+                Console.WriteLine("Invalid postfix expression");
+                return;
+            }
 
-            Console.WriteLine("StackCalculator.Calculate(\"9 0 / 5 3 + -\", stackList)");
-            Console.WriteLine($"Result: {StackCalculator.Calculate("9 0 / 5 3 + -", stackList)}");
+            Console.WriteLine($"Result: {result}");
         }
     }
 }

@@ -2,12 +2,6 @@
 {
     public static class StackCalculator
     {
-        /// <summary>
-        /// Implements the operations +, -, *, / on an arithmetic expression as a string in a postfix notation.
-        /// </summary>
-        /// <param name="postfixExpression">String in reverse Polish notation</param>
-        /// <param name="choice">True/False to use a list-based/array-based stack for calculate</param>
-        /// <returns>True and result if the postfix expression was correct, else false and 0</returns>
         public static (bool, int) Calculate(string postfixExpression, IStack stack)
         { 
             var number = string.Empty;
@@ -45,6 +39,7 @@
                         var topValue = stack.Pop();
                         if (stack.IsEmpty() || (symbol == '/' && topValue == 0))
                         {
+                            stack.Clear();
                             return (false, 0);
                         }
 
@@ -52,6 +47,7 @@
                         PerformOperation(symbol, stack);
                         break;
                     default:
+                        stack.Clear();
                         return (false, 0);
                 }
             }

@@ -1,39 +1,42 @@
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Task3.Tests
 {
+    [TestFixture]
     public class StackTest
     {
-        static IStack[] Stacks = { new StackList(), new StackArray() };
-
-        [SetUp]
-        public void Initialize() 
+        static IEnumerable<IStack> Stacks
         {
-            Stacks = new IStack[] { new StackList(), new StackArray() };
+            get
+            {
+                yield return new StackList();
+                yield return new StackArray();
+            }
         }
 
-        [TestCaseSource("Stacks")]
+        [TestCaseSource(nameof(Stacks))]
         public void PopFromEmptyStackTest(IStack stack)
         {
             Assert.Throws(typeof(InvalidOperationException), () => stack.Pop());
         }
 
-        [TestCaseSource("Stacks")]
+        [TestCaseSource(nameof(Stacks))]
         public void PushTest(IStack stack)
         {
             stack.Push(1);
             Assert.IsFalse(stack.IsEmpty());
         }
 
-        [TestCaseSource("Stacks")]
+        [TestCaseSource(nameof(Stacks))]
         public void PopTest(IStack stack)
         {
             stack.Push(2);
             Assert.AreEqual(2, stack.Pop());
         }
 
-        [TestCaseSource("Stacks")]
+        [TestCaseSource(nameof(Stacks))]
         public void TwoElementsPopTest(IStack stack)
         {
             stack.Push(3);
@@ -42,7 +45,7 @@ namespace Task3.Tests
             Assert.AreEqual(3, stack.Pop());
         }
 
-        [TestCaseSource("Stacks")]
+        [TestCaseSource(nameof(Stacks))]
         public void ClearTest(IStack stack)
         {
             stack.Push(5);
