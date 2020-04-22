@@ -1,6 +1,6 @@
 ﻿namespace Task3
 {
-    static class StackCalculator
+    public static class StackCalculator
     {
         /// <summary>
         /// Implements the operations +, -, *, / on an arithmetic expression as a string in a postfix notation.

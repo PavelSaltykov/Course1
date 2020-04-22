@@ -2,7 +2,7 @@
 
 namespace Task3
 {
-    class StackList : IStack
+    public class StackList : IStack
     {
         private StackElement top;
 

@@ -2,7 +2,7 @@
 
 namespace Task3
 {
-    class StackArray : IStack
+    public class StackArray : IStack
     {
         private int[] stackElements;
         private int counter;

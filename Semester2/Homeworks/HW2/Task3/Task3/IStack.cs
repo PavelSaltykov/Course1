@@ -1,6 +1,6 @@
 ﻿namespace Task3
 {
-    interface IStack
+    public interface IStack
     {
         bool IsEmpty();
 
