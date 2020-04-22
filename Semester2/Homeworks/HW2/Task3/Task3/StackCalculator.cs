@@ -1,7 +1,16 @@
 ﻿namespace Task3
 {
+    /// <summary>
+    /// Class contains method for calculating postfix expression.
+    /// </summary>
     public static class StackCalculator
     {
+        /// <summary>
+        /// Performs the operations +, -, *, / on an arithmetic expression in a postfix notation.
+        /// </summary>
+        /// <param name="postfixExpression">Reverse Polish notation</param>
+        /// <param name="stack">Stack for calculating</param>
+        /// <returns>True and result if the postfix expression was correct; otherwise, false and 0</returns>
         public static (bool, int) Calculate(string postfixExpression, IStack stack)
         { 
             var number = string.Empty;
