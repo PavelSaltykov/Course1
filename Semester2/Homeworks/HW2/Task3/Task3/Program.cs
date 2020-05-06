@@ -12,25 +12,23 @@ namespace Task3
             Console.WriteLine("to calculate postfix expression");
 
             var input = Console.ReadLine();
-            int choice;
-            if (!int.TryParse(input, out choice))
+            if (!int.TryParse(input, out int choice))
             {
                 Console.WriteLine("Invalid input");
                 return;
             }
 
-            IStack stack;
-            switch (choice)
+            IStack stack = choice switch
             {
-                case 1:
-                    stack = new StackList();
-                    break;
-                case 2:
-                    stack = new StackArray();
-                    break;
-                default:
-                    Console.WriteLine("Invalid input");
-                    return;
+                1 => new StackList(),
+                2 => new StackArray(),
+                _ => null
+            };
+
+            if (stack == null)
+            {
+                Console.WriteLine("Invalid input");
+                return;
             }
 
             Console.WriteLine("Enter postfix expression: ");
