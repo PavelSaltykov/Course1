@@ -28,9 +28,9 @@ namespace Test2.Tests
         {
             var listToSort = new List<string> { "sd", "bc", "abd" };
             var expectedList = new List<string> { "abd", "bc", "sd" };
-            var stringComarer = Comparer<string>.Default;
+            var stringComparer = Comparer<string>.Default;
 
-            Program.BubbleSort(listToSort, stringComarer);
+            Program.BubbleSort(listToSort, stringComparer);
 
             Assert.AreEqual(expectedList, listToSort);
         }
