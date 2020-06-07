@@ -1,11 +1,24 @@
-﻿namespace Task2
+﻿using System;
+
+namespace Task2
 {
+    /// <summary>
+    /// List, collection of string values.
+    /// </summary>
     public class List
     {
         private Node head;
 
+        /// <summary>
+        /// List element, contains value and reference to next element.
+        /// </summary>
         private class Node
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Node"/> class.
+            /// </summary>
+            /// <param name="value">Value of element</param>
+            /// <param name="next">Reference to next element</param>
             public Node(string value, Node next)
             {
                 Value = value;
@@ -16,10 +29,23 @@
             public Node Next { get; set; }
         }
 
+        /// <summary>
+        /// Checks for emptiness.
+        /// </summary>
+        /// <returns>True if the list is empty</returns>
         public bool IsEmpty => head == null;
 
+        /// <summary>
+        /// Adds a value to the beginning of the list.
+        /// </summary>
+        /// <param name="value">Value to add</param>
         public void AddToList(string value) => head = new Node(value, head);
 
+        /// <summary>
+        /// Deletes value from the list.
+        /// </summary>
+        /// <param name="value">Value for deletion</param>
+        /// <returns>True if value was delete</returns>
         public bool Delete(string value)
         {
             Node previous = null;
@@ -42,6 +68,11 @@
             return false;
         }
 
+        /// <summary>
+        /// Сhecks if the list contains a value.
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <returns>True if the list contains value</returns>
         public bool Contains(string value)
         {
             var current = head;
@@ -56,11 +87,16 @@
             return false;
         }
 
+        /// <summary>
+        /// Deletes and returns the first value in the list.
+        /// </summary>
+        /// <returns>The first value in the list</returns>
+        /// <exception cref="InvalidOperationException>"Thrown when the list is empty</exception>
         public string DeleteFromHead()
         {
             if (IsEmpty)
             {
-                return string.Empty;
+                throw new InvalidOperationException(); 
             }
 
             var value = head.Value;

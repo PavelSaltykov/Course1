@@ -2,6 +2,9 @@
 
 namespace Task2
 {
+    /// <summary>
+    /// Hash table, collection of string values.
+    /// </summary>
     public class HashTable
     {
         private int size;
@@ -9,6 +12,10 @@ namespace Task2
         private IHashFunction hashFunction;
         private List[] buckets;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HashTable"/> class.
+        /// </summary>
+        /// <param name="hashFunction">Hash function</param>
         public HashTable(IHashFunction hashFunction)
         {
             this.hashFunction = hashFunction;
@@ -65,6 +72,10 @@ namespace Task2
             buckets[hash].AddToList(value);
         }
 
+        /// <summary>
+        /// Adds value to hash table.
+        /// </summary>
+        /// <param name="value">Value to add</param>
         public void AddValue(string value)
         {
             AddToTable(value);
@@ -76,6 +87,11 @@ namespace Task2
             }
         }
 
+        /// <summary>
+        /// Deletes value from the hash table.
+        /// </summary>
+        /// <param name="value">Value for deletion</param>
+        /// <returns>True if value was delete</returns>
         public bool DeleteValue(string value)
         {
             var hash = GetCorrectHash(value);
@@ -87,12 +103,21 @@ namespace Task2
             return valueDeleted;
         }
 
+        /// <summary>
+        /// Сhecks if the hash table contains a value.
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <returns>True if the hash table contains value</returns>
         public bool Contains(string value)
         {
             var hash = GetCorrectHash(value);
             return buckets[hash].Contains(value);
         }
 
+        /// <summary>
+        /// Changes the hash function.
+        /// </summary>
+        /// <param name="newHashFunction">New hash function</param>
         public void ChangeHashFunction(IHashFunction newHashFunction)
         {
             var tempList = TransferAllValuesToList();
@@ -100,6 +125,9 @@ namespace Task2
             TransferValuesFromListToTable(tempList);
         }
 
+        /// <summary>
+        /// Removes all elements from the hash table.
+        /// </summary>
         public void Clear()
         {
             size = 20;
