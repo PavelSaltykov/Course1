@@ -69,6 +69,23 @@ namespace Task2
         }
 
         /// <summary>
+        /// Deletes and returns the first value in the list.
+        /// </summary>
+        /// <returns>The first value in the list</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the list is empty</exception>
+        public string Delete()
+        {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var value = head.Value;
+            head = head.Next;
+            return value;
+        }
+
+        /// <summary>
         /// Сhecks if the list contains a value.
         /// </summary>
         /// <param name="value">Value to check</param>
@@ -85,23 +102,6 @@ namespace Task2
                 current = current.Next;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Deletes and returns the first value in the list.
-        /// </summary>
-        /// <returns>The first value in the list</returns>
-        /// <exception cref="InvalidOperationException>"Thrown when the list is empty</exception>
-        public string DeleteFromHead()
-        {
-            if (IsEmpty)
-            {
-                throw new InvalidOperationException(); 
-            }
-
-            var value = head.Value;
-            head = head.Next;
-            return value;
         }
     }
 }

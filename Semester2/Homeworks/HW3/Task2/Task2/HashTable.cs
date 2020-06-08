@@ -39,7 +39,7 @@ namespace Task2
             {
                 while (!list.IsEmpty)
                 {
-                    var value = list.DeleteFromHead();
+                    var value = list.Delete();
                     newList.AddToList(value);
                 }
             }
@@ -50,7 +50,7 @@ namespace Task2
         {
             while (!list.IsEmpty)
             {
-                AddToTable(list.DeleteFromHead());
+                AddToTable(list.Delete());
             }
         }
 

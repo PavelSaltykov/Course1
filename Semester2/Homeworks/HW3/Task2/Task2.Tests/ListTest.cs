@@ -23,13 +23,22 @@ namespace Task2.Tests
         }
 
         [Test()]
-        public void DeleteTest()
+        public void DeleteFirstValueTest()
         {
             list.AddToList("ab");
 
             Assert.IsFalse(list.Delete("ba"));
             Assert.IsTrue(list.Delete("ab"));
             Assert.IsTrue(list.IsEmpty);
+        }
+
+        [Test()]
+        public void DeleteValueTest()
+        {
+            list.AddToList("ab");
+            list.AddToList("cd");
+
+            Assert.IsTrue(list.Delete("ab"));
         }
 
         [Test()]
@@ -43,14 +52,14 @@ namespace Task2.Tests
         [Test()]
         public void DeleteFromHeadOfEmptyListTest()
         {
-            Assert.Throws(typeof(InvalidOperationException), () => list.DeleteFromHead());
+            Assert.Throws(typeof(InvalidOperationException), () => list.Delete());
         }
 
         [Test()]
-        public void DeleteFromHeadTest()
+        public void DeleteTest()
         {
             list.AddToList("abc");
-            Assert.AreEqual("abc", list.DeleteFromHead());
+            Assert.AreEqual("abc", list.Delete());
             Assert.IsTrue(list.IsEmpty);
         }
     }
