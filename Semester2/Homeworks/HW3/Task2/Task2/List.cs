@@ -45,7 +45,7 @@ namespace Task2
         /// Deletes value from the list.
         /// </summary>
         /// <param name="value">Value for deletion</param>
-        /// <returns>True if value was delete</returns>
+        /// <returns>True if value was deleted</returns>
         public bool Delete(string value)
         {
             Node previous = null;

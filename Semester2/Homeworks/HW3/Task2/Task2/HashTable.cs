@@ -91,7 +91,7 @@ namespace Task2
         /// Deletes value from the hash table.
         /// </summary>
         /// <param name="value">Value for deletion</param>
-        /// <returns>True if value was delete</returns>
+        /// <returns>True if value was deleted</returns>
         public bool DeleteValue(string value)
         {
             var hash = GetCorrectHash(value);
