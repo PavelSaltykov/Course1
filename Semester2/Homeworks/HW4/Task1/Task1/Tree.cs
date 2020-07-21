@@ -3,10 +3,17 @@ using Task1.Operations;
 
 namespace Task1
 {
+    /// <summary>
+    /// Abstract syntax tree.
+    /// </summary>
     public class Tree
     {
         private INode root;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Tree"/> class.
+        /// </summary>
+        /// <param name="expression">Prefix expression</param>
         public Tree(string expression)
         {
             Build(expression);
@@ -41,8 +48,15 @@ namespace Task1
             }
         }
 
+        /// <summary>
+        /// Prints tree.
+        /// </summary>
         public void Print() => root?.Print();
 
+        /// <summary>
+        /// Calculates the value of an expression by tree.
+        /// </summary>
+        /// <returns>Result</returns>
         public int Calculate() => root.Calculate();
     }
 }
