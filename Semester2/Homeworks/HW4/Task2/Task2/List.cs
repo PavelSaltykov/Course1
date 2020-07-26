@@ -1,4 +1,6 @@
-﻿namespace Task2
+﻿using Task2.Exceptions;
+
+namespace Task2
 {
     public class List
     {        
@@ -20,11 +22,11 @@
 
         public bool IsEmpty => head == null;
 
-        public bool AddValue(int value, int position)
+        public void AddValue(int value, int position)
         {
             if (position < 0 || position > Size)
             {
-                return false;
+                throw new InvalidPositionException();
             }
 
             Node previous = null;
@@ -44,14 +46,13 @@
                 previous.Next = new Node(value, current);
             }
             Size++;
-            return true;
         }
 
-        public bool DeleteValue(int position)
+        public void DeleteValue(int position)
         {
             if (position < 0 || position > Size - 1)
             {
-                return false;
+                throw new InvalidPositionException();
             }
 
             Node previous = null;
@@ -71,14 +72,13 @@
                 previous.Next = current.Next;
             }
             Size--;
-            return true;
         }
 
-        public (bool, int) GetValue(int position)
+        public int GetValue(int position)
         {
             if (position < 0 || position > Size - 1)
             {
-                return (false, 0);
+                throw new InvalidPositionException();
             }
 
             var current = head;
@@ -86,14 +86,14 @@
             {
                 current = current.Next;
             }
-            return (true, current.Value);
+            return current.Value;
         }
 
-        public bool SetValue(int value, int position)
+        public void SetValue(int value, int position)
         {
             if (position < 0 || position > Size - 1)
             {
-                return false;
+                throw new InvalidPositionException();
             }
 
             var current = head;
@@ -102,7 +102,6 @@
                 current = current.Next;
             }
             current.Value = value;
-            return true;
         }
     }
 }
