@@ -22,7 +22,7 @@ namespace Task2
 
         public bool IsEmpty => head == null;
 
-        public void AddValue(int value, int position)
+        public virtual void AddValue(int value, int position)
         {
             if (position < 0 || position > Size)
             {
@@ -89,7 +89,7 @@ namespace Task2
             return current.Value;
         }
 
-        public void SetValue(int value, int position)
+        public virtual void SetValue(int value, int position)
         {
             if (position < 0 || position > Size - 1)
             {
@@ -102,6 +102,34 @@ namespace Task2
                 current = current.Next;
             }
             current.Value = value;
+        }
+
+        public bool Contains(int value)
+        {
+            var current = head;
+            for (var i = 0; i < Size; ++i)
+            {
+                if (current.Value == value)
+                {
+                    return true;
+                }
+                current = current.Next;
+            }
+            return false;
+        }
+
+        public int IndexOf(int value)
+        {
+            var current = head;
+            for (var i = 0; i < Size; ++i)
+            {
+                if (current.Value == value)
+                {
+                    return i;
+                }
+                current = current.Next;
+            }
+            return -1;
         }
     }
 }
