@@ -4,27 +4,27 @@ namespace Task2
 {
     public class Game
     {
-        private readonly Map map;
+        public Map GameMap { get; }
 
         public Game(string filename)
         {
-            map = new Map(filename);
-            map.Print();
+            GameMap = new Map(filename);
+            GameMap.Print();
             Console.CursorVisible = false;
         }
 
         private void Move(int stepLeft, int stepUp)
         {
-            var (oldLeft, oldTop) = map.CharacterPosition;
+            var (oldLeft, oldTop) = GameMap.CharacterPosition;
 
-            if (!map.SetCharacterPosition(oldLeft - stepLeft, oldTop - stepUp))
+            if (!GameMap.SetCharacterPosition(oldLeft - stepLeft, oldTop - stepUp))
             {
                 return;
             }
 
             Console.SetCursorPosition(oldLeft, oldTop);
             Console.Write(' ');
-            Console.SetCursorPosition(map.CharacterPosition.left, map.CharacterPosition.top);
+            Console.SetCursorPosition(GameMap.CharacterPosition.left, GameMap.CharacterPosition.top);
             Console.Write(Map.characterSymbol);
         }
 
