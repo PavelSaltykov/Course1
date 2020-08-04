@@ -40,7 +40,10 @@ namespace Task2
 
                 if (currentSymbol == characterSymbol)
                 {
-                    CharacterPosition = (walls[currentLine].Count, currentLine);
+                    if (CharacterPosition == (-1, -1))
+                    {
+                        CharacterPosition = (walls[currentLine].Count, currentLine);
+                    }
                     currentSymbol = ' ';
                 }
 
@@ -67,7 +70,7 @@ namespace Task2
         {
             try
             {
-                if (walls[top][left] != ' ')
+                if (walls[top][left] != ' ' || CharacterPosition == (left, top))
                 {
                     return false;
                 }
