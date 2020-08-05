@@ -17,7 +17,6 @@ namespace Task2
             GameMap = new Map(filename);
             this.setCursor = setCursor;
             GameMap.Print();
-            Console.CursorVisible = false;
         }
 
         private void Move(int stepLeft, int stepUp)

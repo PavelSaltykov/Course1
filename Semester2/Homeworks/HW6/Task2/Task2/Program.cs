@@ -7,6 +7,7 @@ namespace Task2
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
             try
             {
                 var eventLoop = new EventLoop();
