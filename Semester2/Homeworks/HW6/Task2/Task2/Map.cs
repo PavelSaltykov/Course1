@@ -46,9 +46,12 @@ namespace Task2
             while (!streamReader.EndOfStream)
             {
                 var currentSymbol = streamReader.Read();
+
                 if (currentSymbol == '\r')
+                    continue;
+
+                if (currentSymbol == '\n')
                 {
-                    streamReader.Read();
                     walls.Add(new List<char>());
                     currentLine++;
                     continue;
@@ -57,9 +60,7 @@ namespace Task2
                 if (currentSymbol == characterSymbol)
                 {
                     if (CharacterPosition != (-1, -1))
-                    {
                         throw new MoreThanOneCharacterException();
-                    }
 
                     CharacterPosition = (walls[currentLine].Count, currentLine);
                     currentSymbol = ' ';
