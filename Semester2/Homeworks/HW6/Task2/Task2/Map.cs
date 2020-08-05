@@ -4,12 +4,25 @@ using System.IO;
 
 namespace Task2
 {
+    /// <summary>
+    /// Game map from a file.
+    /// </summary>
     public class Map
     {
         private readonly List<List<char>> walls;
-        public const char characterSymbol = '@';
-        public (int left, int top) CharacterPosition { get; private set; } = (-1, -1);
 
+        /// <summary>
+        /// Current position of the character on the map.
+        /// </summary>
+        public (int left, int top) CharacterPosition { get; private set; } = (-1, -1);
+        public const char characterSymbol = '@';
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Map"/> class.
+        /// </summary>
+        /// <param name="filename">Name of the map file</param>
+        /// <exception cref="CharacterNotFoundException">Thrown when the map from the file
+        /// does not contain the character symbol.</exception>
         public Map(string filename)
         {
             walls = new List<List<char>>();
@@ -51,6 +64,9 @@ namespace Task2
             }
         }
 
+        /// <summary>
+        /// Prints the map with the character.
+        /// </summary>
         public void Print()
         {
             walls[CharacterPosition.top][CharacterPosition.left] = '@';
@@ -65,6 +81,14 @@ namespace Task2
             walls[CharacterPosition.top][CharacterPosition.left] = ' ';
         }
 
+        /// <summary>
+        /// Sets the position of the character on the map.
+        /// </summary>
+        /// <param name="left">The column position of the character.
+        /// Columns are numbered from left to right starting at 0.</param>
+        /// <param name="top">The row position of the character.
+        /// Rows are numbered from top to bottom starting at 0.</param>
+        /// <returns>True if the position was changed; otherwise, false</returns>
         public bool SetCharacterPosition(int left, int top)
         {
             try

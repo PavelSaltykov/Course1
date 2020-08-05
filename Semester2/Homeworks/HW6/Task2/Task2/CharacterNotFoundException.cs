@@ -2,6 +2,9 @@
 
 namespace Task2
 {
+    /// <summary>
+    /// The exception that is thrown when the map from the file does not contain the character symbol.
+    /// </summary>
     [Serializable]
     public class CharacterNotFoundException : Exception
     {

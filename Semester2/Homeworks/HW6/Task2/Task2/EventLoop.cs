@@ -2,6 +2,9 @@
 
 namespace Task2
 {
+    /// <summary>
+    /// Сlass that implements the event loop.
+    /// </summary>
     public class EventLoop
     {
         public event EventHandler<EventArgs> LeftHandler = (sender, args) => { };
@@ -9,6 +12,9 @@ namespace Task2
         public event EventHandler<EventArgs> UpHandler = (sender, args) => { };
         public event EventHandler<EventArgs> DownHandler = (sender, args) => { };
 
+        /// <summary>
+        /// Starts an endless event loop.
+        /// </summary>
         public void Run()
         {
             while (true)
