@@ -9,7 +9,7 @@ namespace Task2.Tests
         private Game game;
 
         [SetUp]
-        public void Initialize() => game = new Game("mapForGameTests.txt");
+        public void Initialize() => game = new Game("mapForGameTests.txt", (left, top) => { });
 
         [Test()]
         public void OnLeftTest()

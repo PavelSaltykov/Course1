@@ -53,6 +53,7 @@ namespace Task2
 
         public void Print()
         {
+            walls[CharacterPosition.top][CharacterPosition.left] = '@';
             foreach (var line in walls)
             {
                 foreach (var symbol in line)
@@ -61,9 +62,7 @@ namespace Task2
                 }
                 Console.WriteLine();
             }
-
-            Console.SetCursorPosition(CharacterPosition.left, CharacterPosition.top);
-            Console.Write(characterSymbol);
+            walls[CharacterPosition.top][CharacterPosition.left] = ' ';
         }
 
         public bool SetCharacterPosition(int left, int top)

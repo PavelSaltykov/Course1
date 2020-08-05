@@ -5,10 +5,17 @@ namespace Task2
     public class Game
     {
         public Map GameMap { get; }
+        private readonly Action<int, int> setCursor;
 
         public Game(string filename)
+            : this(filename, (left, top) => Console.SetCursorPosition(left, top))
+        {
+        }
+
+        public Game(string filename, Action<int, int> setCursor)
         {
             GameMap = new Map(filename);
+            this.setCursor = setCursor;
             GameMap.Print();
             Console.CursorVisible = false;
         }
@@ -22,9 +29,9 @@ namespace Task2
                 return;
             }
 
-            Console.SetCursorPosition(oldLeft, oldTop);
+            setCursor(oldLeft, oldTop);
             Console.Write(' ');
-            Console.SetCursorPosition(GameMap.CharacterPosition.left, GameMap.CharacterPosition.top);
+            setCursor(GameMap.CharacterPosition.left, GameMap.CharacterPosition.top);
             Console.Write(Map.characterSymbol);
         }
 
