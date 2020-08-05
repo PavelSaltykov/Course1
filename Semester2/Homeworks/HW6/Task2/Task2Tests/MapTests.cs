@@ -16,9 +16,7 @@ namespace Task2.Tests
         [Test()]
         public void TwoCharactersTest()
         {
-            map = new Map("mapWithTwoCharacters.txt");
-            Assert.AreEqual((1, 0), map.CharacterPosition);
-            Assert.IsTrue(map.SetCharacterPosition(1, 1));
+            Assert.Throws<MoreThanOneCharacterException>(()=>map = new Map("mapWithTwoCharacters.txt"));
         }
 
         [Test()]
@@ -44,6 +42,7 @@ namespace Task2.Tests
         {
             map = new Map("mapForCharacterPositionTests.txt");
             Assert.IsFalse(map.SetCharacterPosition(3, 1));
+            Assert.IsFalse(map.SetCharacterPosition(0, 3));
         }
 
         [Test()]

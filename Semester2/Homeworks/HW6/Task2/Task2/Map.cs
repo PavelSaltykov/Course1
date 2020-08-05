@@ -23,6 +23,8 @@ namespace Task2
         /// <param name="filename">Name of the map file</param>
         /// <exception cref="CharacterNotFoundException">Thrown when the map from the file
         /// does not contain the character symbol.</exception>
+        /// <exception cref="MoreThanOneCharacterException">Thrown when
+        /// there is more than one character on the map.</exception>
         public Map(string filename)
         {
             walls = new List<List<char>>();
@@ -37,15 +39,16 @@ namespace Task2
 
         private void LoadMap(string filename)
         {
-            using var sr = new StreamReader(filename);
+            using var streamReader = new StreamReader(filename);
             var currentLine = 0;
             walls.Add(new List<char>());
 
-            while (!sr.EndOfStream)
+            while (!streamReader.EndOfStream)
             {
-                var currentSymbol = sr.Read();
-                if (currentSymbol == '\n')
+                var currentSymbol = streamReader.Read();
+                if (currentSymbol == '\r')
                 {
+                    streamReader.Read();
                     walls.Add(new List<char>());
                     currentLine++;
                     continue;
@@ -53,10 +56,12 @@ namespace Task2
 
                 if (currentSymbol == characterSymbol)
                 {
-                    if (CharacterPosition == (-1, -1))
+                    if (CharacterPosition != (-1, -1))
                     {
-                        CharacterPosition = (walls[currentLine].Count, currentLine);
+                        throw new MoreThanOneCharacterException();
                     }
+
+                    CharacterPosition = (walls[currentLine].Count, currentLine);
                     currentSymbol = ' ';
                 }
 
@@ -91,20 +96,18 @@ namespace Task2
         /// <returns>True if the position was changed; otherwise, false</returns>
         public bool SetCharacterPosition(int left, int top)
         {
-            try
-            {
-                if (walls[top][left] != ' ' || CharacterPosition == (left, top))
-                {
-                    return false;
-                }
-
-                CharacterPosition = (left, top);
-                return true;
-            }
-            catch (ArgumentOutOfRangeException)
+            if (left < 0 || top < 0 || top >= walls.Count || left >= walls[top].Count)
             {
                 return false;
             }
+
+            if (walls[top][left] != ' ' || CharacterPosition == (left, top))
+            {
+                return false;
+            }
+
+            CharacterPosition = (left, top);
+            return true;
         }
     }
 }
