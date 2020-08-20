@@ -42,15 +42,12 @@ namespace Task1
             if (number1 == null)
                 throw new MissingOperandException();
 
-            if (number2 == null)
-                return (double)number1;
-            
             if (operation == Operation.Division && number2 == 0)
                 throw new DivideByZeroException();
             
-            var result = PerformOperation();
+            var result = (double)PerformOperation();
             number1 = result;
-            return (double)result;
+            return result;
         }
 
         private double? PerformOperation() =>

@@ -15,13 +15,14 @@ namespace Task1
         private readonly Calculator calculator;
 
         private const string initialEntry = "0";
+        private const string errorMessage = "Error";
         private string Entry
         {
-            get => textBox.Text; 
+            get => textBox.Text;
             set => textBox.Text = value;
         }
 
-        private bool shouldCreateNewNumber;
+        private bool isResultShown;
         private bool operationSelected;
         private bool afterEqualSign;
 
@@ -30,34 +31,31 @@ namespace Task1
         private void DigitButtonClick(object sender, EventArgs e)
         {
             var button = (Button)sender;
-            Entry = (Entry == initialEntry || shouldCreateNewNumber) ? button.Text : Entry + button.Text;
-            shouldCreateNewNumber = false;
+            var shouldCreateNewNumber = Entry == initialEntry || isResultShown;
+            Entry = shouldCreateNewNumber ? button.Text : Entry + button.Text;
+            isResultShown = false;
         }
 
         private void ChangeSignButtonClick(object sender, EventArgs e)
         {
-            if (Entry == initialEntry)
+            if (Entry == initialEntry || Entry == errorMessage)
                 return;
 
             Entry = (Entry[0] == '-') ? Entry.Remove(0, 1) : Entry.Insert(0, "-");
             
-            if (afterEqualSign)
-            {
-                calculator.Clear();
-                calculator.AddNumber(Convert.ToDouble(Entry));
-            }
+            isResultShown = false;
         }
 
         private void DecimalSeparatorButtonClick(object sender, EventArgs e)
         {
+            if (isResultShown)
+            {
+                Entry = initialEntry;
+                isResultShown = false;
+            }
+
             if (Entry.Contains(','))
                 return;
-
-            if (shouldCreateNewNumber)
-            {
-                Entry = "0";
-                shouldCreateNewNumber = false;
-            }
 
             Entry = Entry.Insert(Entry.Length, ",");
         }
@@ -75,12 +73,12 @@ namespace Task1
         private void ClearEntry()
         {
             Entry = initialEntry;
-            shouldCreateNewNumber = false;
+            isResultShown = false;
         }
 
         private void BackspaceButtonClick(object sender, EventArgs e)
         {
-            if (shouldCreateNewNumber)
+            if (isResultShown)
                 return;
 
             var length = Entry.Length;
@@ -90,24 +88,35 @@ namespace Task1
 
         private void OperationButtonClick(object sender, EventArgs e)
         {
-            if (afterEqualSign && !shouldCreateNewNumber)
-            {
-                calculator.Clear();
-                operationSelected = false;
-            }
+            if (Entry == errorMessage)
+                return;
 
-            if (!shouldCreateNewNumber)
+            if (!isResultShown)
             {
+                if (afterEqualSign)
+                {
+                    calculator.Clear();
+                    operationSelected = false;
+                }
+
                 calculator.AddNumber(Convert.ToDouble(Entry));
-            }
-
-            if (operationSelected && !shouldCreateNewNumber)
-            {
-                PrintResult();
+                if (operationSelected)
+                {
+                    PrintResult();
+                }
             }
 
             var sign = ((Button)sender).Text;
-            var operation = sign switch
+            var operation = GetOperation(sign);
+            calculator.AddOperation(operation);
+
+            isResultShown = true;
+            operationSelected = true;
+            afterEqualSign = false;
+        }
+
+        private Operation GetOperation(string sign) =>
+            sign switch
             {
                 "+" => Operation.Addition,
                 "-" => Operation.Subtraction,
@@ -115,18 +124,10 @@ namespace Task1
                 "÷" => Operation.Division,
                 _ => throw new InvalidOperationSignException()
             };
-            calculator.AddOperation(operation);
-            shouldCreateNewNumber = true;
-            operationSelected = true;
-            afterEqualSign = false;
-        }
 
         private void EqualSignButtonClick(object sender, EventArgs e)
         {
-            if (!operationSelected)
-                return;
-
-            if (!shouldCreateNewNumber || (operationSelected && !afterEqualSign))
+            if (!isResultShown || !afterEqualSign)
             {
                 calculator.AddNumber(Convert.ToDouble(Entry));
             }
@@ -136,8 +137,8 @@ namespace Task1
                 PrintResult();
             }
 
+            isResultShown = true;
             afterEqualSign = true;
-            shouldCreateNewNumber = true;
         }
 
         private void PrintResult()
@@ -148,10 +149,9 @@ namespace Task1
             }
             catch (DivideByZeroException)
             {
-                Entry = "Error";
+                Entry = errorMessage;
                 calculator.Clear();
                 operationSelected = false;
-                afterEqualSign = false;
             }
         }
     }
