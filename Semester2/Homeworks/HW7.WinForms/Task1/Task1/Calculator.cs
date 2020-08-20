@@ -39,7 +39,7 @@ namespace Task1
 
         public double Calculate()
         {
-            if (number1 == null)
+            if (number1 == null || number2 == null)
                 throw new MissingOperandException();
 
             if (operation == Operation.Division && number2 == 0)
