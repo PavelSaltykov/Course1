@@ -3,6 +3,9 @@ using Task1.Exceptions;
 
 namespace Task1
 {
+    /// <summary>
+    /// Arithmetic operations.
+    /// </summary>
     public enum Operation
     {
         None,
@@ -12,12 +15,19 @@ namespace Task1
         Division
     }
 
+    /// <summary>
+    /// Allows to perform operations on two double type numbers.
+    /// </summary>
     public class Calculator
     {
         private double? number1;
         private double? number2;
         private Operation operation;
 
+        /// <summary>
+        /// If the first operand exists, adds or changes the second; otherwise, adds the first operand.
+        /// </summary>
+        /// <param name="number">Operand to add</param>
         public void AddNumber(double number)
         {
             if (number1 == null)
@@ -28,8 +38,15 @@ namespace Task1
             number2 = number;
         }
 
+        /// <summary>
+        /// Adds or changes an operation.
+        /// </summary>
+        /// <param name="operation">Operation to add</param>
         public void AddOperation(Operation operation) => this.operation = operation;
 
+        /// <summary>
+        /// Removes operands and the operation.
+        /// </summary>
         public void Clear()
         {
             number1 = null;
@@ -37,6 +54,12 @@ namespace Task1
             operation = Operation.None;
         }
 
+        /// <summary>
+        /// Performs an operation.
+        /// </summary>
+        /// <returns>Calculation result</returns>
+        /// <exception cref="MissingOperandException">Thrown when there is not operand.</exception>
+        /// <exception cref="MissingOperationException">Thrown when there is not operation.</exception>
         public double Calculate()
         {
             if (number1 == null || number2 == null)

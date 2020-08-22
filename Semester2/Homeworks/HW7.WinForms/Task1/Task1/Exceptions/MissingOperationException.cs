@@ -2,6 +2,9 @@
 
 namespace Task1.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when there is not operation to perform an operation.
+    /// </summary>
     [Serializable]
     public class MissingOperationException : Exception
     {

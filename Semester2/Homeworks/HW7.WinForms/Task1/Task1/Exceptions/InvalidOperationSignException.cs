@@ -2,6 +2,9 @@
 
 namespace Task1.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when the sign does not match any operation.
+    /// </summary>
     [Serializable]
     public class InvalidOperationSignException : Exception
     {

@@ -26,8 +26,14 @@ namespace Task1
         private bool operationSelected;
         private bool afterEqualSign;
 
+        /// <summary>
+        /// Moves focus from the text box.
+        /// </summary>
         private void TextBoxFocusEnter(object sender, EventArgs e) => equalSignButton.Focus();
 
+        /// <summary>
+        /// Handles a click a numeric button.
+        /// </summary>
         private void DigitButtonClick(object sender, EventArgs e)
         {
             var button = (Button)sender;
@@ -36,6 +42,9 @@ namespace Task1
             isResultShown = false;
         }
 
+        /// <summary>
+        /// Handles a click the change sign button.
+        /// </summary>
         private void ChangeSignButtonClick(object sender, EventArgs e)
         {
             if (Entry == initialEntry || Entry == errorMessage)
@@ -46,6 +55,9 @@ namespace Task1
             isResultShown = false;
         }
 
+        /// <summary>
+        /// Handles a click the decimal separator button.
+        /// </summary>
         private void DecimalSeparatorButtonClick(object sender, EventArgs e)
         {
             if (isResultShown)
@@ -60,8 +72,14 @@ namespace Task1
             Entry = Entry.Insert(Entry.Length, ",");
         }
 
+        /// <summary>
+        /// Handles a click the Clear Entry button.
+        /// </summary>
         private void ClearEntryButtonClick(object sender, EventArgs e) => ClearEntry();
 
+        /// <summary>
+        /// Handles a click the Clear button.
+        /// </summary>
         private void ClearButtonClick(object sender, EventArgs e)
         {
             ClearEntry();
@@ -76,6 +94,9 @@ namespace Task1
             isResultShown = false;
         }
 
+        /// <summary>
+        /// Handles a click the Backspace button.
+        /// </summary>
         private void BackspaceButtonClick(object sender, EventArgs e)
         {
             if (isResultShown)
@@ -86,6 +107,9 @@ namespace Task1
             Entry = makeInitial ? initialEntry : Entry.Remove(length - 1);
         }
 
+        /// <summary>
+        /// Handles a click an operation button.
+        /// </summary>
         private void OperationButtonClick(object sender, EventArgs e)
         {
             if (Entry == errorMessage)
@@ -125,6 +149,9 @@ namespace Task1
                 _ => throw new InvalidOperationSignException()
             };
 
+        /// <summary>
+        /// Handles a click the equal sign button.
+        /// </summary>
         private void EqualSignButtonClick(object sender, EventArgs e)
         {
             if (!isResultShown || !afterEqualSign)
