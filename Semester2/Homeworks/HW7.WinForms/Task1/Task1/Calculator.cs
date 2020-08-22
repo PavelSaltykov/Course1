@@ -55,7 +55,7 @@ namespace Task1
         }
 
         /// <summary>
-        /// Performs an operation.
+        /// Performs an operation and puts the result in the first operand.
         /// </summary>
         /// <returns>Calculation result</returns>
         /// <exception cref="MissingOperandException">Thrown when there is not operand.</exception>
