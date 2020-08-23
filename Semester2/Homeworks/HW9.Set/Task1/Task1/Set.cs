@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Task1
 {
@@ -83,86 +84,157 @@ namespace Task1
             if (array.Length - arrayIndex < Count)
                 throw new ArgumentException(nameof(array));
 
-            CopySubtree(root);
-
-            void CopySubtree(Node node)
+            foreach (var item in this)
             {
-                if (node == null)
-                    return;
-
-                CopySubtree(node.LeftChild);
-                array[arrayIndex] = node.Value;
+                array[arrayIndex] = item;
                 arrayIndex++;
-                CopySubtree(node.RightChild);
             }
         }
 
         public void ExceptWith(IEnumerable<T> other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+                throw new ArgumentNullException();
+
+            if (other == this)
+            {
+                Clear();
+                return;
+            }
+
+            foreach (var item in other)
+            {
+                Remove(item);
+            }
         }
+
+        public void IntersectWith(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            var itemsToRemove = this.Except(other);
+
+            foreach (var item in itemsToRemove)
+            {
+                Remove(item);
+            }
+        }
+
+        public bool IsProperSubsetOf(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            return IsSubsetOf(other) && Count < other.Distinct().Count();
+        }
+
+        public bool IsProperSupersetOf(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            return IsSupersetOf(other) && Count > other.Distinct().Count();
+        }
+
+        public bool IsSubsetOf(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            foreach (var item in this)
+            {
+                if (!other.Contains(item))
+                    return false;
+            }
+            return true;
+        }
+
+        public bool IsSupersetOf(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            foreach (var item in other)
+            {
+                if (!Contains(item))
+                    return false;
+            }
+            return true;
+        }
+
+        public bool Overlaps(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            foreach (var item in other)
+            {
+                if (Contains(item))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool SetEquals(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            return IsSubsetOf(other) && Count == other.Distinct().Count();
+        }
+
+        public void SymmetricExceptWith(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            if (other == this)
+            {
+                Clear();
+                return;
+            }
+
+            foreach (var item in other)
+            {
+                if (Contains(item))
+                {
+                    Remove(item);
+                }
+                else
+                {
+                    Add(item);
+                }
+            }
+        }
+
+        public void UnionWith(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            if (other == this)
+                return;
+
+            foreach (var item in other)
+            {
+                Add(item);
+            }
+        }
+
+        void ICollection<T>.Add(T item) => Add(item);
 
         public IEnumerator<T> GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
-        public void IntersectWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsProperSubsetOf(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsProperSupersetOf(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsSubsetOf(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsSupersetOf(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Overlaps(IEnumerable<T> other)
+        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
         public bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SetEquals(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SymmetricExceptWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnionWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<T>.Add(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
