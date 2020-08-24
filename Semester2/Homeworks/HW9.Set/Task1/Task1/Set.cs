@@ -48,6 +48,11 @@ namespace Task1
             }
         }
 
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Clear()
         {
             root = null;
@@ -224,19 +229,25 @@ namespace Task1
 
         void ICollection<T>.Add(T item) => Add(item);
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerator<T> GetEnumerator() => CopyToList().GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public bool Remove(T item)
+        private List<T> CopyToList()
         {
-            throw new NotImplementedException();
+            var list = new List<T>();
+            CopySubtree(root);
+            return list;
+
+            void CopySubtree(Node node)
+            {
+                if (node == null)
+                    return;
+
+                CopySubtree(node.LeftChild);
+                list.Add(node.Value);
+                CopySubtree(node.RightChild);
+            }
         }
     }
 }
