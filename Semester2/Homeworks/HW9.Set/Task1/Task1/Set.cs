@@ -19,6 +19,8 @@ namespace Task1
             {
                 Value = value;
             }
+
+            public bool IsFull => LeftChild != null && RightChild != null;
         }
 
         public int Count { get; private set; }
@@ -57,10 +59,98 @@ namespace Task1
             return true;
         }
 
+        #region Removing
+        private Node GetNode(T item)
+        {
+            var current = root;
+            while (current != null)
+            {
+                var order = item.CompareTo(current.Value);
+                if (order == 0)
+                    return current;
+
+                current = (order < 0) ? current.LeftChild : current.RightChild;
+            }
+            return null;
+        }
+
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            var nodeToRemove = GetNode(item);
+            if (nodeToRemove == null)
+                return false;
+
+            Count--;
+            if (nodeToRemove.IsFull)
+            {
+                TransferValue(nodeToRemove);
+                return true;
+            }
+
+            if (nodeToRemove == root)
+            {
+                root = root.LeftChild ?? root.RightChild;
+                return true;
+            }
+
+            RemoveNotFullNode(nodeToRemove);
+            return true;
         }
+
+        private void TransferValue(Node destination)
+        {
+            var helpNode = NearestToMiddle(destination);
+            destination.Value = helpNode.Value;
+            RemoveNotFullNode(helpNode);
+        }
+
+        private void RemoveNotFullNode(Node nodeToRemove)
+        {
+            var parent = GetParent(nodeToRemove);
+            int order = nodeToRemove.Value.CompareTo(parent);
+            Node newChild = nodeToRemove.LeftChild ?? nodeToRemove.RightChild;
+
+            if (order < 0)
+                parent.LeftChild = newChild;
+            else if (order > 0)
+                parent.RightChild = newChild;
+        }
+
+        private Node GetParent(Node node)
+        {
+            var current = root;
+            while (current != null)
+            {
+                if (current.LeftChild == node || current.RightChild == node)
+                    return current;
+
+                var order = node.Value.CompareTo(current.Value);
+                current = (order < 0) ? current.LeftChild : current.RightChild;
+            }
+            return null;
+        }
+
+        private Node NearestToMiddle(Node node)
+        {
+            var nearestOnLeft = node.LeftChild;
+            var leftLength = 1;
+            while (nearestOnLeft.RightChild != null)
+            {
+                nearestOnLeft = nearestOnLeft.RightChild;
+                leftLength++;
+            }
+
+            var nearestOnRight = node.RightChild;
+            var rightLength = 1;
+            while (nearestOnRight.LeftChild != null)
+            {
+                nearestOnRight = nearestOnRight.LeftChild;
+                rightLength++;
+            }
+
+            return (leftLength > rightLength) ? nearestOnLeft : nearestOnRight;
+        }
+        #endregion
 
         public void Clear()
         {
