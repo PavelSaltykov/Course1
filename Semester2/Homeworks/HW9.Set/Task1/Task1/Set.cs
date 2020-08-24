@@ -27,25 +27,34 @@ namespace Task1
 
         public bool Add(T item)
         {
-            return AddToSubtree(root);
-
-            bool AddToSubtree(Node node)
+            if (root == null)
             {
-                if (node == null)
-                {
-                    node = new Node(item);
-                    Count++;
-                    return true;
-                }
-
-                if (item.CompareTo(node.Value) < 0)
-                    return AddToSubtree(node.LeftChild);
-
-                if (item.CompareTo(node.Value) > 0)
-                    return AddToSubtree(node.RightChild);
-
-                return false;
+                root = new Node(item);
+                Count++;
+                return true;
             }
+
+            var current = root;
+            Node parent = null;
+            var order = 0;
+
+            while (current != null)
+            {
+                order = item.CompareTo(current.Value);
+                if (order == 0)
+                    return false;
+
+                parent = current;
+                current = (order < 0) ? current.LeftChild : current.RightChild;
+            }
+
+            if (order < 0)
+                parent.LeftChild = new Node(item);
+            else
+                parent.RightChild = new Node(item);
+
+            Count++;
+            return true;
         }
 
         public bool Remove(T item)
