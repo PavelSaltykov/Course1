@@ -8,6 +8,7 @@ namespace Task1
     public class Set<T> : ISet<T> where T : IComparable
     {
         private Node root;
+        private int version;
 
         private class Node
         {
@@ -33,6 +34,7 @@ namespace Task1
             {
                 root = new Node(item);
                 Count++;
+                version++;
                 return true;
             }
 
@@ -56,6 +58,7 @@ namespace Task1
                 parent.RightChild = new Node(item);
 
             Count++;
+            version++;
             return true;
         }
 
@@ -81,6 +84,7 @@ namespace Task1
                 return false;
 
             Count--;
+            version++;
             if (nodeToRemove.IsFull)
             {
                 TransferValue(nodeToRemove);
@@ -156,6 +160,7 @@ namespace Task1
         {
             root = null;
             Count = 0;
+            version++;
         }
 
         public bool Contains(T item)
@@ -328,24 +333,56 @@ namespace Task1
 
         void ICollection<T>.Add(T item) => Add(item);
 
-        public IEnumerator<T> GetEnumerator() => CopyToList().GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => new Enumerator(this);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private List<T> CopyToList()
+        private class Enumerator : IEnumerator<T>
         {
-            var list = new List<T>();
-            CopySubtree(root);
-            return list;
+            private readonly Set<T> set;
+            private readonly int version;
+            private readonly T[] items;
+            private int position;
 
-            void CopySubtree(Node node)
+            public Enumerator(Set<T> set)
             {
-                if (node == null)
-                    return;
+                this.set = set;
+                version = set.version;
+                items = new T[set.Count];
+                set.CopyTo(items, 0);
+                position = -1;
+            }
 
-                CopySubtree(node.LeftChild);
-                list.Add(node.Value);
-                CopySubtree(node.RightChild);
+            public T Current
+            {
+                get
+                {
+                    if (version != set.version || position < 0 || position >= items.Length)
+                        return default;
+
+                    return items[position];
+                }
+            }
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose() { }
+
+            public bool MoveNext()
+            {
+                if (version != set.version)
+                    throw new InvalidOperationException();
+
+                position++;
+                return position < items.Length;
+            }
+
+            public void Reset()
+            {
+                if (version != set.version)
+                    throw new InvalidOperationException();
+
+                position = -1;
             }
         }
     }
