@@ -218,10 +218,17 @@ namespace Task1
             if (array.Length - arrayIndex < Count)
                 throw new ArgumentException(nameof(array));
 
-            foreach (var item in this)
+            CopySubtree(root);
+
+            void CopySubtree(Node node)
             {
-                array[arrayIndex] = item;
+                if (node == null)
+                    return;
+
+                CopySubtree(node.LeftChild);
+                array[arrayIndex] = node.Value;
                 arrayIndex++;
+                CopySubtree(node.RightChild);
             }
         }
 
