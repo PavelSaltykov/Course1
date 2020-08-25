@@ -5,22 +5,47 @@ using System.Linq;
 
 namespace Task1
 {
+    /// <summary>
+    /// Represents a collection of objects.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the set.</typeparam>
     public class Set<T> : ISet<T> where T : IComparable
     {
         private Node root;
         private int version;
 
+        /// <summary>
+        /// The node that contains data and references to the left and right children.
+        /// </summary>
         private class Node
         {
+            /// <summary>
+            /// Value in the <see cref="Node"/>.
+            /// </summary>
             public T Value { get; set; }
+
+            /// <summary>
+            /// Reference to the left child.
+            /// </summary>
             public Node LeftChild { get; set; }
+
+            /// <summary>
+            /// Reference to the right child.
+            /// </summary>
             public Node RightChild { get; set; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Node"/> class.
+            /// </summary>
+            /// <param name="value">Value in the node.</param>
             public Node(T value)
             {
                 Value = value;
             }
 
+            /// <summary>
+            /// Returns true if the <see cref="Node"/> has both children; otherwise, false.
+            /// </summary>
             public bool IsFull => LeftChild != null && RightChild != null;
         }
 
@@ -87,7 +112,7 @@ namespace Task1
             version++;
             if (nodeToRemove.IsFull)
             {
-                TransferValue(nodeToRemove);
+                TransferValueToFullNode(nodeToRemove);
                 return true;
             }
 
@@ -101,7 +126,7 @@ namespace Task1
             return true;
         }
 
-        private void TransferValue(Node destination)
+        private void TransferValueToFullNode(Node destination)
         {
             var helpNode = NearestToMiddle(destination);
             destination.Value = helpNode.Value;
@@ -337,17 +362,26 @@ namespace Task1
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        /// <summary>
+        /// Defines the enumerator for the <see cref="Set{T}"/>.
+        /// </summary>
         private class Enumerator : IEnumerator<T>
         {
             private readonly Set<T> set;
             private readonly int version;
+
             private readonly T[] items;
             private int position;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Enumerator"/> class.
+            /// </summary>
+            /// <param name="set">Set for iterations.</param>
             public Enumerator(Set<T> set)
             {
                 this.set = set;
                 version = set.version;
+
                 items = new T[set.Count];
                 set.CopyTo(items, 0);
                 position = -1;
