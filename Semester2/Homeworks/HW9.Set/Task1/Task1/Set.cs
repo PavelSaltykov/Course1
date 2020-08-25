@@ -136,7 +136,7 @@ namespace Task1
         private void RemoveNotFullNode(Node nodeToRemove)
         {
             var parent = GetParent(nodeToRemove);
-            int order = nodeToRemove.Value.CompareTo(parent);
+            int order = nodeToRemove.Value.CompareTo(parent.Value);
             Node newChild = nodeToRemove.LeftChild ?? nodeToRemove.RightChild;
 
             if (order < 0)

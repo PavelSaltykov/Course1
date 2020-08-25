@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace Task1.Tests
@@ -8,18 +9,10 @@ namespace Task1.Tests
     {
         private Set<int> set;
 
-        [SetUp]
-        public void Initialize() => set = new Set<int>();
-
         [Test]
         public void ForeachTest()
         {
-            set.Add(4);
-            set.Add(3);
-            set.Add(5);
-            set.Add(1);
-            set.Add(2);
-            set.Add(0);
+            set = new Set<int> { 4, 3, 5, 1, 2, 0 };
 
             var actualList = new List<int>();
             foreach (var item in set)
@@ -27,37 +20,85 @@ namespace Task1.Tests
                 actualList.Add(item);
             }
 
-            var excpectedList = new List<int>() { 0, 1, 2, 3, 4, 5 };
-            Assert.AreEqual(excpectedList, actualList);
+            var expectedList = new List<int>() { 0, 1, 2, 3, 4, 5 };
+            Assert.AreEqual(expectedList, actualList);
+        }
+
+        [Test]
+        public void ChangeInForeachTest()
+        {
+            set = new Set<int>() { 0 };
+
+            void ChaingeSetInForeach()
+            {
+                foreach (var item in set)
+                {
+                    set.Add(-1);
+                }
+            }
+
+            Assert.Throws<InvalidOperationException>(() => ChaingeSetInForeach());
         }
 
         [Test()]
         public void AddTest()
         {
-            set.Add(0);
-            Assert.AreEqual(1, set.Count);
+            set = new Set<int>();
+
+            Assert.IsTrue(set.Add(0));
+            Assert.IsTrue(set.Add(1));
+            Assert.IsTrue(set.Add(2));
+
+            Assert.AreEqual(3, set.Count);
+            Assert.IsTrue(set.Contains(2));
+            Assert.IsTrue(set.Contains(1));
             Assert.IsTrue(set.Contains(0));
         }
 
         [Test()]
         public void AddExistingItemTest()
         {
-            set.Add(0);
-            set.Add(0);
+            set = new Set<int>() { 0 };
+            
+            Assert.IsFalse(set.Add(0));
             Assert.AreEqual(1, set.Count);
         }
 
-        //[Test()]
-        //public void RemoveTest()
-        //{
-        //    Assert.Fail();
-        //}
+        [Test()]
+        public void RemoveTest()
+        {
+            set = new Set<int>() { 0, 5, 1, -5, 4 };
 
-        //[Test()]
-        //public void ClearTest()
-        //{
-        //    Assert.Fail();
-        //}
+            Assert.IsTrue(set.Remove(0));
+            Assert.IsTrue(set.Remove(-5));
+
+            Assert.AreEqual(3, set.Count);
+            Assert.IsFalse(set.Contains(0));
+            Assert.IsFalse(set.Contains(-5));
+        }
+
+        [Test()]
+        public void RemoveNotExistingItemTest()
+        {
+            set = new Set<int>() { 0, 1, 2 };
+
+            Assert.IsFalse(set.Remove(-1));
+            Assert.AreEqual(3, set.Count);
+        }
+
+        [Test()]
+        public void ClearTest()
+        {
+            set = new Set<int>() { 1, 0, 2 };
+            Assert.AreEqual(3, set.Count);
+
+            set.Clear();
+
+            Assert.AreEqual(0, set.Count);
+            Assert.IsFalse(set.Contains(1));
+            Assert.IsFalse(set.Contains(0));
+            Assert.IsFalse(set.Contains(2));
+        }
 
         //[Test()]
         //public void ContainsTest()
