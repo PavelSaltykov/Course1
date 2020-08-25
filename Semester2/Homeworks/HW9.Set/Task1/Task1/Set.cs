@@ -254,11 +254,57 @@ namespace Task1
             if (other == null)
                 throw new ArgumentNullException();
 
-            var itemsToRemove = this.Except(other);
+            var itemsToRemove = new List<T>();
+
+            foreach(var item in this)
+            {
+                if (!other.Contains(item))
+                {
+                    itemsToRemove.Add(item);
+                }
+            }
 
             foreach (var item in itemsToRemove)
             {
                 Remove(item);
+            }
+        }
+
+        public void SymmetricExceptWith(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            if (other == this)
+            {
+                Clear();
+                return;
+            }
+
+            foreach (var item in other)
+            {
+                if (Contains(item))
+                {
+                    Remove(item);
+                }
+                else
+                {
+                    Add(item);
+                }
+            }
+        }
+
+        public void UnionWith(IEnumerable<T> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+
+            if (other == this)
+                return;
+
+            foreach (var item in other)
+            {
+                Add(item);
             }
         }
 
@@ -323,44 +369,6 @@ namespace Task1
                 throw new ArgumentNullException();
 
             return IsSubsetOf(other) && Count == other.Distinct().Count();
-        }
-
-        public void SymmetricExceptWith(IEnumerable<T> other)
-        {
-            if (other == null)
-                throw new ArgumentNullException();
-
-            if (other == this)
-            {
-                Clear();
-                return;
-            }
-
-            foreach (var item in other)
-            {
-                if (Contains(item))
-                {
-                    Remove(item);
-                }
-                else
-                {
-                    Add(item);
-                }
-            }
-        }
-
-        public void UnionWith(IEnumerable<T> other)
-        {
-            if (other == null)
-                throw new ArgumentNullException();
-
-            if (other == this)
-                return;
-
-            foreach (var item in other)
-            {
-                Add(item);
-            }
         }
 
         void ICollection<T>.Add(T item) => Add(item);

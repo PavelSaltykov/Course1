@@ -100,35 +100,88 @@ namespace Task1.Tests
             Assert.IsFalse(set.Contains(2));
         }
 
+        [Test()]
+        public void ContainsTest()
+        {
+            set = new Set<int>() { 1, -1, 0 };
+            Assert.IsTrue(set.Contains(0));
+            Assert.IsFalse(set.Contains(-2));
+        }
+
+        [Test()]
+        public void CopyToTest()
+        {
+            set = new Set<int>() { 3, -2, 0, 5, 2, 4, 1 };
+
+            var actualArray = new int[set.Count + 2];
+            set.CopyTo(actualArray, 2);
+
+            var expectedArray = new int[] { 0, 0, -2, 0, 1, 2, 3, 4, 5 };
+            Assert.AreEqual(expectedArray, actualArray);
+        }
+
+        [Test()]
+        public void ExceptWithTest()
+        {
+            set = new Set<int>() { 0, 1, 2, 3 };
+            var other = new int[] { 0, 2, 4, 5 };
+
+            set.ExceptWith(other);
+            var expected = new int[] { 1, 3 };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
+        [Test()]
+        public void ExceptWithItselfTest()
+        {
+            set = new Set<int>() { 0, 1 };
+
+            set.ExceptWith(set);
+            var expected = new int[] { };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
+        [Test()]
+        public void IntersectWithTest()
+        {
+            set = new Set<int>() { 3, 0, 2, 4 };
+            var other = new int[] { 0, 2, 3, 5 };
+
+            set.IntersectWith(other);
+            var expected = new int[] { 0, 2, 3 };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
+        [Test()]
+        public void IntersectWithItselfTest()
+        {
+            set = new Set<int>() { -1, 1, 0 };
+
+            set.IntersectWith(set);
+            var expected = new int[] { -1, 1, 0 };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
         //[Test()]
-        //public void ContainsTest()
+        //public void SymmetricExceptWithTest()
         //{
         //    Assert.Fail();
         //}
 
         //[Test()]
-        //public void CopyToTest()
+        //public void UnionWithTest()
         //{
         //    Assert.Fail();
         //}
 
-        //[Test()]
-        //public void ExceptWithTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[Test()]
-        //public void IntersectWithTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[Test()]
-        //public void IsProperSubsetOfTest()
-        //{
-        //    Assert.Fail();
-        //}
+        [Test()]
+        public void IsProperSubsetOfTest()
+        {
+            set = new Set<int>() { 0, 1, 2, 3 };
+            Assert.IsTrue(set.IsProperSubsetOf(new int[] { 1, 2, 3, 0, -1 }));
+            Assert.IsFalse(set.IsProperSubsetOf(set));
+            Assert.IsFalse(set.IsProperSubsetOf(new int[] { 1, 2, 3 }));
+        }
 
         //[Test()]
         //public void IsProperSupersetOfTest()
@@ -156,24 +209,6 @@ namespace Task1.Tests
 
         //[Test()]
         //public void SetEqualsTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[Test()]
-        //public void SymmetricExceptWithTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[Test()]
-        //public void UnionWithTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[Test()]
-        //public void GetEnumeratorTest()
         //{
         //    Assert.Fail();
         //}
