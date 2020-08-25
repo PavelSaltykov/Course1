@@ -38,10 +38,7 @@ namespace Task1
             /// Initializes a new instance of the <see cref="Node"/> class.
             /// </summary>
             /// <param name="value">Value in the node.</param>
-            public Node(T value)
-            {
-                Value = value;
-            }
+            public Node(T value) => Value = value;
 
             /// <summary>
             /// Returns true if the <see cref="Node"/> has both children; otherwise, false.
@@ -87,7 +84,6 @@ namespace Task1
             return true;
         }
 
-        #region Removing
         private Node GetNode(T item)
         {
             var current = root;
@@ -179,7 +175,6 @@ namespace Task1
 
             return (leftLength > rightLength) ? nearestOnLeft : nearestOnRight;
         }
-        #endregion
 
         public void Clear()
         {
@@ -406,7 +401,7 @@ namespace Task1
             {
                 get
                 {
-                    if (version != set.version || position < 0 || position >= items.Length)
+                    if (position < 0 || position >= items.Length)
                         return default;
 
                     return items[position];
@@ -422,8 +417,11 @@ namespace Task1
                 if (version != set.version)
                     throw new InvalidOperationException();
 
+                if (position + 1 >= items.Length)
+                    return false;
+
                 position++;
-                return position < items.Length;
+                return true;
             }
 
             public void Reset()
