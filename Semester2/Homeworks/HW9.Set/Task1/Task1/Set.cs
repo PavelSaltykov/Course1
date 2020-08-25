@@ -129,8 +129,8 @@ namespace Task1
         private void TransferValueToFullNode(Node destination)
         {
             var helpNode = NearestToMiddle(destination);
-            destination.Value = helpNode.Value;
             RemoveNotFullNode(helpNode);
+            destination.Value = helpNode.Value;
         }
 
         private void RemoveNotFullNode(Node nodeToRemove)

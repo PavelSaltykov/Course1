@@ -59,7 +59,7 @@ namespace Task1.Tests
         public void AddExistingItemTest()
         {
             set = new Set<int>() { 0 };
-            
+
             Assert.IsFalse(set.Add(0));
             Assert.AreEqual(1, set.Count);
         }
@@ -162,17 +162,47 @@ namespace Task1.Tests
             CollectionAssert.AreEquivalent(expected, set);
         }
 
-        //[Test()]
-        //public void SymmetricExceptWithTest()
-        //{
-        //    Assert.Fail();
-        //}
+        [Test()]
+        public void SymmetricExceptWithTest()
+        {
+            set = new Set<int>() { 0, -4, -2, 1, 4, 2 };
+            var other = new int[] { 0, 2, 4, 5, -1 };
 
-        //[Test()]
-        //public void UnionWithTest()
-        //{
-        //    Assert.Fail();
-        //}
+            set.SymmetricExceptWith(other);
+            var expected = new int[] { -4, -2, 1, 5, -1 };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
+        [Test()]
+        public void SymmetricExceptWithItselfTest()
+        {
+            set = new Set<int>() { 1, 2, 3 };
+
+            set.SymmetricExceptWith(set);
+            var expected = new int[] { };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
+        [Test()]
+        public void UnionWithTest()
+        {
+            set = new Set<int>() { 3, 5, 2, 0, -1 };
+            var other = new int[] { 3, 2, 10, 7 };
+
+            set.UnionWith(other);
+            var expected = new int[] { 3, 5, 2, 0, -1, 10, 7 };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
+
+        [Test()]
+        public void UnionWithItselfTest()
+        {
+            set = new Set<int>() { 0, -2, -1 };
+
+            set.UnionWith(set);
+            var expected = new int[] { 0, -2, -1 };
+            CollectionAssert.AreEquivalent(expected, set);
+        }
 
         [Test()]
         public void IsProperSubsetOfTest()
